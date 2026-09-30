@@ -18,5 +18,10 @@ until curl --fail --silent "$base_url/ready" >/dev/null; do
 done
 
 docker exec "$container" /app/.venv/bin/python scripts/sdk_smoke.py
-python3 scripts/validate_materials.py --base-url "$base_url" --output "${REPORT_PATH:-reports/materials.json}"
-python3 scripts/benchmark.py --base-url "$base_url" --max-p95 1.0
+report_path="${2:-${REPORT_PATH:-reports/examples.json}}"
+mkdir -p "$(dirname "$report_path")"
+python3 scripts/runtime_metadata.py "$container" > "${report_path%.json}-runtime.json"
+python3 scripts/run_examples.py --base-url "$base_url" --output "$report_path" \
+  --runtime-metadata "${report_path%.json}-runtime.json"
+python3 scripts/benchmark.py --base-url "$base_url" \
+  --output "${report_path%.json}-benchmark.json"

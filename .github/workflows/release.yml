@@ -80,15 +80,15 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=system-one-${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=system-one-${{ matrix.arch }}
-      - name: Validate API, material fixture, and latency
+      - name: Validate API and all examples; record latency
         env:
           IMAGE: system-one-classification:ci
         run: task image-smoke
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: materials-${{ matrix.arch }}
-          path: reports/materials.json
+          name: examples-${{ matrix.arch }}
+          path: reports/*.json
           if-no-files-found: ignore
       - name: Log into GHCR
         if: github.event_name != 'pull_request'
