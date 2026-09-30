@@ -1,52 +1,24 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "message_specificity",
   "title": "Message specificity",
-  "lesson": "Change only level descriptions. Scores are expectations over indices 0 through 3, not integer labels.",
-  "variants": {
-    "baseline": {
-      "preparation": "original",
-      "questions": {
-        "specificity": {
-          "type": "score",
-          "instructions": "Rate the specificity of the message. Choose the highest level whose description is satisfied.",
-          "criteria": [
-            "Generic",
-            "Product named",
-            "Concrete request",
-            "Actionable detail"
-          ]
-        }
-      }
-    },
-    "prepared": {
-      "preparation": "original",
-      "questions": {
-        "specificity": {
-          "type": "score",
-          "instructions": "Rate the specificity of the message. Choose the highest level whose description is satisfied.",
-          "criteria": [
-            "Generic enquiry; no product is named and no concrete issue or request is stated.",
-            "A product is named, but there is no concrete issue or requested action.",
-            "A concrete issue or requested action is stated, but details needed to act are missing.",
-            "A concrete issue or requested action includes useful details such as reproduction steps, an order identifier or an exact requested change."
-          ]
-        }
-      }
+  "lesson": "Describe what each level requires. Scores are expectations over indices 0 through 3, not integer labels.",
+  "questions": {
+    "specificity": {
+      "type": "score",
+      "instructions": "Rate the specificity of the message. Choose the highest level whose description is satisfied.",
+      "criteria": [
+        "Generic enquiry; no product is named and no concrete issue or request is stated.",
+        "A product is named, but there is no concrete issue or requested action.",
+        "A concrete issue or requested action is stated, but details needed to act are missing.",
+        "A concrete issue or requested action includes useful details such as reproduction steps, an order identifier or an exact requested change."
+      ]
     }
   },
-  "comparisons": [
-    [
-      "baseline",
-      "prepared"
-    ]
-  ],
   "cases": [
     {
       "id": "case-01",
       "state": "Hello, can you help me?",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 0
       }
@@ -54,8 +26,6 @@
     {
       "id": "case-02",
       "state": "I would like some information.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 0
       }
@@ -63,8 +33,6 @@
     {
       "id": "case-03",
       "state": "I have a question about your calendar app.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 1
       }
@@ -72,8 +40,6 @@
     {
       "id": "case-04",
       "state": "I am contacting you about the photo editor.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 1
       }
@@ -81,8 +47,6 @@
     {
       "id": "case-05",
       "state": "The calendar app crashes when I use it.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 2
       }
@@ -90,8 +54,6 @@
     {
       "id": "case-06",
       "state": "Please change the delivery address on my order.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 2
       }
@@ -99,8 +61,6 @@
     {
       "id": "case-07",
       "state": "In the calendar app, create an event, set it to repeat daily, then click Save. The app closes.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 3
       }
@@ -108,8 +68,6 @@
     {
       "id": "case-08",
       "state": "Please change the delivery address for order A123 to 24 Cedar Road, York.",
-      "language": "en",
-      "split": "development",
       "expected": {
         "specificity": 3
       }
@@ -117,8 +75,6 @@
     {
       "id": "case-09",
       "state": "Could someone contact me with more information?",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 0
       }
@@ -126,8 +82,6 @@
     {
       "id": "case-10",
       "state": "I need assistance, please.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 0
       }
@@ -135,8 +89,6 @@
     {
       "id": "case-11",
       "state": "I would like to discuss your note-taking app.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 1
       }
@@ -144,8 +96,6 @@
     {
       "id": "case-12",
       "state": "My enquiry concerns the desktop printer.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 1
       }
@@ -153,8 +103,6 @@
     {
       "id": "case-13",
       "state": "The printer produces blank pages.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 2
       }
@@ -162,8 +110,6 @@
     {
       "id": "case-14",
       "state": "Please cancel my subscription.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 2
       }
@@ -171,8 +117,6 @@
     {
       "id": "case-15",
       "state": "The printer produces blank pages when I choose duplex printing; single-sided pages print correctly.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 3
       }
@@ -180,8 +124,6 @@
     {
       "id": "case-16",
       "state": "Please cancel subscription SUB-45 at the end of its current billing period on 31 October.",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "specificity": 3
       }

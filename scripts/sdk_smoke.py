@@ -13,16 +13,6 @@ from example_support import (
 from von import VonClient
 
 
-def first_request(suite: dict) -> dict:
-    """Prefer later formulations, skipping cases without a prepared input."""
-    for variant in reversed(suite["variants"]):
-        for case in suite["cases"]:
-            payload, _ = prepare_request(suite, case, variant)
-            if payload is not None:
-                return payload
-    raise RuntimeError(f"{suite['id']}: no runnable case for the SDK check")
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
@@ -34,7 +24,7 @@ def main() -> None:
         api_key=os.environ.get("SYSTEM_ONE_API_KEY"),
     )
     for suite in load_suites():
-        payload = first_request(suite)
+        payload = prepare_request(suite, suite["cases"][0])
         result = client.system_one(**payload)
         validate_response(payload, result.model_dump(exclude_none=True))
         print(f"Von HTTP SDK: {suite['id']} response parsed")

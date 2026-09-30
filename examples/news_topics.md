@@ -31,15 +31,15 @@ Read `answers.topic.choice` for the selected label and `answers.topic.probabilit
 
 The expected answer is `sports`. A sentence about a football club’s annual revenue is `business`, because the question asks what the sentence reports.
 
-## Compare the descriptions
+## About the descriptions
 
-The original query uses topic names. The reworded query adds the definitions shown above. These four topics cover the example inputs; a broader news collection may need more categories.
+Each topic has a short definition of what belongs in it. These four topics cover the example inputs; a broader news collection may need more categories.
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example news_topics --case case-01 --variant prepared
+python3 scripts/run_examples.py --example news_topics --case case-01
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example news_topics --output reports/news_topics.json
 ```
 

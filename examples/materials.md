@@ -49,17 +49,17 @@ Read `answers.material.choice` for the selected label. The expected answer here 
 
 These are expected answers for checking the model, not guaranteed predictions. `unknown` means the material is outside this catalogue; it does not mean the input is misspelled.
 
-## Compare the descriptions
+## About the descriptions
 
-The original query uses short labels. The reworded query adds the definitions and examples shown above. Both use the same question and the same cement-to-concrete catalogue rule.
+Each group has a definition with examples, and the question states the cement-to-concrete catalogue rule.
 
-The fixture has eight development cases and eight evaluation cases. Most are ordinary names and descriptions; only two contain simple typos. See the [multilingual example](multilingual.md) for translation.
+The fixture has 16 cases. Most are ordinary names and descriptions; only two contain simple typos.
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example materials --case case-11 --variant prepared
+python3 scripts/run_examples.py --example materials --case case-11
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example materials --output reports/materials.json
 ```
 

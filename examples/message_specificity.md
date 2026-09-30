@@ -31,17 +31,17 @@ Read `answers.specificity.score`. It is a probability-weighted average of the le
 
 The expected level is `3` because the message includes steps to reproduce the crash. A message that only says the app crashes is level `2`.
 
-## Compare the level descriptions
+## About the level descriptions
 
-The original query uses short level names. The reworded query describes what each level requires. The report measures the average distance from the expected level; lower is better.
+Each level describes what a message needs to reach it. The report measures the average distance from the expected level; lower is better.
 
-The reworded query had a larger error in the [recorded run](results.md). The request above returned 0.68 against an expected level of 3.
+The request above returned 0.68 against an expected level of 3. Describing the levels does not guarantee accurate scores.
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example message_specificity --case case-07 --variant prepared
+python3 scripts/run_examples.py --example message_specificity --case case-07
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example message_specificity --output reports/message_specificity.json
 ```
 

@@ -1,58 +1,27 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "materials",
   "title": "Materials classification",
-  "lesson": "Classify material names and short descriptions into catalogue groups. Compare short labels with definitions and examples, including materials outside the catalogue.",
-  "variants": {
-    "baseline": {
-      "preparation": "original",
-      "questions": {
-        "material": {
-          "type": "choice",
-          "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
-          "criteria": {
-            "concrete": "concrete",
-            "steel": "steel",
-            "timber": "timber",
-            "brick": "brick",
-            "glass": "glass",
-            "stone": "stone",
-            "unknown": "Aluminum, plastic, copper, or other unlisted materials"
-          }
-        }
-      }
-    },
-    "prepared": {
-      "preparation": "original",
-      "questions": {
-        "material": {
-          "type": "choice",
-          "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
-          "criteria": {
-            "concrete": "Concrete, made from cement, sand and aggregate. This group also includes cement.",
-            "steel": "Steel, an iron alloy used for beams and reinforcement bars.",
-            "timber": "Timber or wood, used for boards, flooring and furniture.",
-            "brick": "Brick, a fired clay block used to build walls.",
-            "glass": "Glass, used for window panes and bottles.",
-            "stone": "Natural stone, such as granite, marble and limestone.",
-            "unknown": "A material outside the concrete, steel, timber, brick, glass and stone groups, such as plastic, copper or aluminum."
-          }
-        }
+  "lesson": "Classify material names and short descriptions into catalogue groups, including materials outside the catalogue.",
+  "questions": {
+    "material": {
+      "type": "choice",
+      "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
+      "criteria": {
+        "concrete": "Concrete, made from cement, sand and aggregate. This group also includes cement.",
+        "steel": "Steel, an iron alloy used for beams and reinforcement bars.",
+        "timber": "Timber or wood, used for boards, flooring and furniture.",
+        "brick": "Brick, a fired clay block used to build walls.",
+        "glass": "Glass, used for window panes and bottles.",
+        "stone": "Natural stone, such as granite, marble and limestone.",
+        "unknown": "A material outside the concrete, steel, timber, brick, glass and stone groups, such as plastic, copper or aluminum."
       }
     }
   },
-  "comparisons": [
-    [
-      "baseline",
-      "prepared"
-    ]
-  ],
   "cases": [
     {
       "id": "case-01",
       "state": "concrete",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "concrete"
       }
@@ -60,8 +29,6 @@
     {
       "id": "case-02",
       "state": "steel reinforcement bars",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "steel"
       }
@@ -69,8 +36,6 @@
     {
       "id": "case-03",
       "state": "wood",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "timber"
       }
@@ -78,8 +43,6 @@
     {
       "id": "case-04",
       "state": "clay bricks",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "brick"
       }
@@ -87,8 +50,6 @@
     {
       "id": "case-05",
       "state": "window glass",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "glass"
       }
@@ -96,8 +57,6 @@
     {
       "id": "case-06",
       "state": "granite",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "stone"
       }
@@ -105,8 +64,6 @@
     {
       "id": "case-07",
       "state": "plastic",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "unknown"
       }
@@ -114,8 +71,6 @@
     {
       "id": "case-08",
       "state": "cement",
-      "language": "en",
-      "split": "development",
       "expected": {
         "material": "concrete"
       }
@@ -123,8 +78,6 @@
     {
       "id": "case-09",
       "state": "ready-mix concrete",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "concrete"
       }
@@ -132,8 +85,6 @@
     {
       "id": "case-10",
       "state": "steeel",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "steel"
       }
@@ -141,8 +92,6 @@
     {
       "id": "case-11",
       "state": "oak floorboards",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "timber"
       }
@@ -150,8 +99,6 @@
     {
       "id": "case-12",
       "state": "brik",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "brick"
       }
@@ -159,8 +106,6 @@
     {
       "id": "case-13",
       "state": "glass bottles",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "glass"
       }
@@ -168,8 +113,6 @@
     {
       "id": "case-14",
       "state": "marble tiles",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "stone"
       }
@@ -177,8 +120,6 @@
     {
       "id": "case-15",
       "state": "copper pipe",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "unknown"
       }
@@ -186,8 +127,6 @@
     {
       "id": "case-16",
       "state": "aluminum sheet",
-      "language": "en",
-      "split": "evaluation",
       "expected": {
         "material": "unknown"
       }

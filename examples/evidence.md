@@ -33,15 +33,15 @@ Read `answers.relation.choice` for the selected label. The expected answer is `c
 
 A record of a Monday dispatch leaves a claim of Tuesday arrival unresolved. Its expected label is `insufficient_evidence`. Keep the record and claim in separate fields and ask Von to use only the record.
 
-## Compare the descriptions
+## About the descriptions
 
-Both queries use the same three labels. The reworded query adds definitions for each one.
+Each of the three labels has a definition, so a missing fact goes to `insufficient_evidence` and a conflicting one to `contradicted`.
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example evidence --case case-02 --variant prepared
+python3 scripts/run_examples.py --example evidence --case case-02
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example evidence --output reports/evidence.json
 ```
 

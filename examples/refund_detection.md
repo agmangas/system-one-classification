@@ -29,15 +29,15 @@ Read `answers.refund_requested.noul` for the probability of an explicit refund r
 
 “Please return my payment” has an expected answer of `true`. “Do not refund me. Please repair the item” is `false`. Here, `false` means the message contains no explicit request for money back.
 
-## Compare the criteria
+## About the criteria
 
-The original query omits criteria. The reworded query describes both `true` and `false`, as shown above.
+The criteria describe both `true` and `false`, as shown above. The [query guide](query-guide.md#choose-a-question-type) recommends defining both for Noul.
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example refund_detection --case case-01 --variant prepared
+python3 scripts/run_examples.py --example refund_detection --case case-01
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example refund_detection --output reports/refund_detection.json
 ```
 

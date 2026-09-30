@@ -9,18 +9,6 @@ from pathlib import Path
 from string import Template
 
 ASSETS = Path(__file__).with_name("report_assets")
-QUERY_NAMES = {
-    "baseline": "Original query",
-    "prepared": "Reworded query",
-    "direct": "Original text",
-    "translated": "English translation",
-    "glossary": "Glossary lookup",
-}
-CASE_USES = {
-    "development": "Tuning query wording",
-    "evaluation": "Checking query results",
-    "legacy": "Checking query results (older materials cases)",
-}
 
 
 def escape(value) -> str:
@@ -29,10 +17,6 @@ def escape(value) -> str:
 
 def readable(value: str) -> str:
     return value.replace("_", " ").capitalize()
-
-
-def query_name(value: str) -> str:
-    return QUERY_NAMES.get(value, readable(value))
 
 
 def display(value) -> str:
@@ -77,34 +61,19 @@ def summary_result(rows: list[dict]) -> str:
         parts.append(f"<div>{escape(label + result)}</div>")
     if not parts:
         parts.append("No answers")
-    counts = Counter(row["status"] for row in rows)
-    missing = []
-    if counts["skipped"]:
-        missing.append(f"{counts['skipped']} skipped")
-    if counts["error"]:
-        missing.append(f"{counts['error']} failed")
-    if missing:
-        parts.append(f'<div class="muted">{escape(" · ".join(missing))}</div>')
+    failed = sum(row["status"] == "error" for row in rows)
+    if failed:
+        parts.append(f'<div class="muted">{escape(f"{failed} failed")}</div>')
     return "".join(parts)
 
 
 def render_summary(rows: list[dict]) -> str:
-    parts = []
-    for (suite,), suite_rows in group_rows(rows, "suite").items():
-        variants = group_rows(suite_rows, "variant")
-        parts.append(f'<tbody data-suite="{escape(suite)}">')
-        for index, ((variant,), selected) in enumerate(variants.items()):
-            heading = (
-                f'<th scope="rowgroup" rowspan="{len(variants)}">{escape(readable(suite))}</th>'
-                if index == 0
-                else ""
-            )
-            parts.append(
-                f"<tr>{heading}<td>{escape(query_name(variant))}</td>"
-                f"<td>{summary_result(selected)}</td></tr>"
-            )
-        parts.append("</tbody>")
-    return "".join(parts)
+    return "".join(
+        f'<tbody data-suite="{escape(suite)}"><tr>'
+        f'<th scope="row">{escape(readable(suite))}</th>'
+        f"<td>{summary_result(suite_rows)}</td></tr></tbody>"
+        for (suite,), suite_rows in group_rows(rows, "suite").items()
+    )
 
 
 def query_details(row: dict) -> str:
@@ -138,11 +107,6 @@ def query_details(row: dict) -> str:
                         f'aria-label="{escape(label)} probability">{probability:.1%}</meter>'
                         f"<span>{probability:.1%}</span></div>"
                     )
-    purpose = CASE_USES.get(row["split"], row["split"])
-    parts.append(
-        f'<p class="muted">Case purpose: {escape(purpose)}. '
-        f"Language: {escape(row['language'])}.</p>"
-    )
     if "elapsed_s" in row:
         parts.append(f'<p class="muted">Request time: {row["elapsed_s"]:.3f} seconds.</p>')
     parts.append(
@@ -154,9 +118,7 @@ def query_details(row: dict) -> str:
 
 
 def render_answer(row: dict) -> str:
-    parts = [f"<h4>{escape(query_name(row['variant']))}</h4>"]
-    if row.get("unsupported_language_input"):
-        parts.append(badge("Non-English input: model supports English only", "warning"))
+    parts = ["<h4>Model answer</h4>"]
     if row["status"] == "ok":
         for name, outcome in row["outcomes"].items():
             parts.append(f'<div class="outcome"><h5>{escape(readable(name))}</h5>')
@@ -178,26 +140,21 @@ def render_answer(row: dict) -> str:
                     )
             parts.append("</div>")
     else:
-        skipped = row["status"] == "skipped"
-        parts.append(badge("Skipped" if skipped else "Failed", "warning"))
-        parts.append(f"<p>{escape(row['reason' if skipped else 'error'])}</p>")
-    if row["preparation"] == "translation":
-        parts.append('<p class="muted">Uses a fixed English translation.</p>')
+        parts.append(badge("Failed", "warning"))
+        parts.append(f"<p>{escape(row['error'])}</p>")
     parts.append(query_details(row))
-    return '<section class="variant">' + "".join(parts) + "</section>"
+    return '<section class="answer">' + "".join(parts) + "</section>"
 
 
 def render_cases(rows: list[dict]) -> str:
     parts = []
-    for (suite, case), selected in group_rows(rows, "suite", "case").items():
-        source = selected[0]["source"]
-        different = any(
+    for row in rows:
+        suite, case, source = row["suite"], row["case"], row["source"]
+        different = row["status"] == "ok" and any(
             outcome.get("correct") is False or outcome.get("absolute_error", 0) > 1e-9
-            for row in selected
-            if row["status"] == "ok"
             for outcome in row["outcomes"].values()
         )
-        issue = any(row["status"] != "ok" for row in selected)
+        issue = row["status"] != "ok"
         expected = "".join(
             f"<div>{escape(readable(name))}: <strong>{escape(display(value))}</strong></div>"
             for name, value in source["expected"].items()
@@ -212,29 +169,28 @@ def render_cases(rows: list[dict]) -> str:
             f'<span class="muted">/ {escape(case)}</span></h3></header>'
             f'<div class="input"><h4>Input</h4>{code(state)}'
             f"<h4>Expected answer</h4>{expected}</div>"
-            f'<div class="variants">{"".join(render_answer(row) for row in selected)}</div>'
+            f"{render_answer(row)}"
             "</article>"
         )
     return "".join(parts)
 
 
 def render_report(report: dict) -> str:
-    if not isinstance(report, dict) or report.get("schema_version") != 1:
-        raise ValueError("expected a schema-version-1 examples report")
+    if not isinstance(report, dict) or report.get("schema_version") != 2:
+        raise ValueError("expected a schema-version-2 examples report")
     if not isinstance(report.get("cases"), list):
         raise ValueError("report cases must be a list")
     try:
         rows = report["cases"]
         counts = Counter(row["status"] for row in rows)
-        if counts.keys() - {"ok", "skipped", "error"}:
+        if counts.keys() - {"ok", "error"}:
             raise ValueError("unknown case status")
         suites = dict.fromkeys(row["suite"] for row in rows)
         return Template((ASSETS / "report.html").read_text(encoding="utf-8")).substitute(
             stylesheet=(ASSETS / "report.css").read_text(encoding="utf-8"),
             script=(ASSETS / "report.js").read_text(encoding="utf-8"),
-            input_count=len(group_rows(rows, "suite", "case")),
+            input_count=len(rows),
             answered_count=counts["ok"],
-            skipped_count=counts["skipped"],
             error_count=counts["error"],
             errors="".join(
                 f'<p class="error-message">{escape(error)}</p>'

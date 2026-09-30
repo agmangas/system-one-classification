@@ -1,22 +1,16 @@
-"""Fixture loading, preparation and HTTP helpers; standard library only."""
+"""Fixture loading, request and HTTP helpers; standard library only."""
 
 import copy
 import hashlib
 import json
 import math
 import os
-import unicodedata
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = "system-one-cpu"
-
-
-def normalize_term(text: str) -> str:
-    """Normalize spelling presentation, never translate or guess a fuzzy match."""
-    return " ".join(unicodedata.normalize("NFC", text).casefold().split())
 
 
 def require(condition: bool, message: str) -> None:
@@ -54,36 +48,10 @@ def validate_questions(questions: dict) -> None:
 
 def validate_suite(suite: dict) -> None:
     require(isinstance(suite, dict), "fixture must be an object")
-    require(suite.get("schema_version") == 1, "unsupported fixture schema")
+    require(suite.get("schema_version") == 2, "unsupported fixture schema")
     require(isinstance(suite.get("id"), str) and bool(suite["id"]), "missing suite id")
-    variants = suite.get("variants")
-    require(isinstance(variants, dict) and bool(variants), "missing variants")
-    for variant in variants.values():
-        require(isinstance(variant, dict), "variant must be an object")
-        require(
-            variant.get("preparation") in {"original", "translation", "glossary"},
-            "invalid preparation",
-        )
-        validate_questions(variant.get("questions"))
-    comparisons = suite.get("comparisons", [])
-    require(isinstance(comparisons, list), "comparisons must be a list")
-    for pair in comparisons:
-        require(
-            isinstance(pair, list)
-            and len(pair) == 2
-            and all(isinstance(v, str) and v in variants for v in pair)
-            and pair[0] != pair[1],
-            "comparison must name two different existing variants",
-        )
-    require(isinstance(suite.get("glossary", {}), dict), "glossary must be an object")
-    for language, terms in suite.get("glossary", {}).items():
-        require(isinstance(language, str) and isinstance(terms, dict), "invalid glossary")
-        normalized = [normalize_term(term) for term in terms]
-        require(len(set(normalized)) == len(normalized), "duplicate normalized glossary terms")
-        require(
-            all(normalized) and all(isinstance(v, str) and v.strip() for v in terms.values()),
-            "empty glossary term or translation",
-        )
+    questions = suite.get("questions")
+    validate_questions(questions)
     require(isinstance(suite.get("cases"), list) and bool(suite["cases"]), "missing cases")
     ids = set()
     for case in suite["cases"]:
@@ -92,25 +60,12 @@ def validate_suite(suite: dict) -> None:
         require(case["id"] not in ids, f"duplicate case id: {case['id']}")
         ids.add(case["id"])
         require(isinstance(case.get("state"), (str, dict)), "state must be text or an object")
+        expected = case.get("expected")
         require(
-            isinstance(case.get("language"), str) and bool(case["language"]), "missing language"
+            isinstance(expected, dict) and set(expected) == set(questions),
+            f"{case['id']}: expected answers must match question names",
         )
-        require(case.get("split") in {"development", "evaluation"}, "invalid split")
-        require(
-            case.get("translation") is None or isinstance(case["translation"], (str, dict)),
-            "translation must be text or an object",
-        )
-        for variant in variants.values():
-            questions = variant["questions"]
-            expected = case.get("expected")
-            require(
-                isinstance(expected, dict) and set(expected) == set(questions),
-                f"{case['id']}: expected answers must match question names",
-            )
-            validate_expected(questions, expected)
-            if variant["preparation"] == "glossary":
-                require(isinstance(case["state"], str), "glossary input must be text")
-                require(bool(suite.get("glossary")), "glossary variant needs a glossary")
+        validate_expected(questions, expected)
 
 
 def validate_expected(questions: dict, expected: dict) -> None:
@@ -144,39 +99,23 @@ def load_suites(selection: str = "all") -> list[dict]:
     return suites
 
 
-def prepare_request(suite: dict, case: dict, variant_name: str) -> tuple[dict | None, str | None]:
-    variant = suite["variants"][variant_name]
-    preparation = variant["preparation"]
-    state = case["state"]
-    if preparation == "translation":
-        state = case.get("translation")
-        if state is None:
-            return None, "missing fixed English translation"
-    elif preparation == "glossary":
-        terms = suite["glossary"].get(case["language"], {})
-        lookup = {normalize_term(k): v for k, v in terms.items()}
-        state = lookup.get(normalize_term(state))
-        if state is None:
-            return None, "no exact glossary match"
-    # Whitelist wire fields. Gold labels, original-language provenance and IDs stay local.
+def prepare_request(suite: dict, case: dict) -> dict:
+    # Whitelist wire fields. Gold labels and IDs stay local.
     return {
         "model": MODEL,
-        "state": copy.deepcopy(state),
-        "questions": copy.deepcopy(variant["questions"]),
-    }, None
+        "state": copy.deepcopy(case["state"]),
+        "questions": copy.deepcopy(suite["questions"]),
+    }
 
 
-def selected_cases(suites: list[dict], case_id: str | None, variant_name: str | None):
-    selections = []
-    for suite in suites:
-        if variant_name and variant_name not in suite["variants"]:
-            continue
-        variants = [variant_name] if variant_name else list(suite["variants"])
-        for case in suite["cases"]:
-            if case_id and case["id"] != case_id:
-                continue
-            selections.extend((suite, case, variant) for variant in variants)
-    require(bool(selections), "no cases match the requested case/variant")
+def selected_cases(suites: list[dict], case_id: str | None) -> list[tuple[dict, dict]]:
+    selections = [
+        (suite, case)
+        for suite in suites
+        for case in suite["cases"]
+        if not case_id or case["id"] == case_id
+    ]
+    require(bool(selections), "no cases match the requested case")
     return selections
 
 
@@ -285,21 +224,9 @@ def evaluate_answers(expected: dict, response: dict) -> dict:
 def summarize(rows: list[dict]) -> list[dict]:
     groups = {}
     for row in rows:
-        key = tuple(row[k] for k in ("suite", "variant", "split", "language", "preparation"))
         group = groups.setdefault(
-            key,
-            {
-                "suite": row["suite"],
-                "variant": row["variant"],
-                "split": row["split"],
-                "language": row["language"],
-                "preparation": row["preparation"],
-                "total": 0,
-                "ok": 0,
-                "skipped": 0,
-                "error": 0,
-                "questions": {},
-            },
+            row["suite"],
+            {"suite": row["suite"], "total": 0, "ok": 0, "error": 0, "questions": {}},
         )
         group["total"] += 1
         group[row["status"]] += 1
@@ -313,58 +240,10 @@ def summarize(rows: list[dict]) -> list[dict]:
             else:
                 metric["sum"] += outcome["correct"]
     for group in groups.values():
-        group["preparation_coverage"] = (group["total"] - group["skipped"]) / group["total"]
         for metric in group["questions"].values():
             name = "mae" if metric["type"] == "score" else "accuracy"
             metric[name] = metric.pop("sum") / metric["count"]
     return list(groups.values())
-
-
-def compare_pairs(rows: list[dict], suites: list[dict]) -> list[dict]:
-    """Compare only identical cases successfully answered by both named variants."""
-    lookup = {(r["suite"], r["case"], r["variant"]): r for r in rows if r["status"] == "ok"}
-    groups = {}
-    for suite in suites:
-        for baseline, prepared in suite.get("comparisons", []):
-            compare_variant_pair(suite, baseline, prepared, lookup, groups)
-    return list(groups.values())
-
-
-def compare_variant_pair(suite: dict, baseline: str, prepared: str, lookup: dict, groups: dict):
-    for case in suite["cases"]:
-        left = lookup.get((suite["id"], case["id"], baseline))
-        right = lookup.get((suite["id"], case["id"], prepared))
-        if not left or not right:
-            continue
-        for name, before in left["outcomes"].items():
-            after = right["outcomes"][name]
-            key = (suite["id"], baseline, prepared, case["split"], case["language"], name)
-            group = groups.setdefault(
-                key,
-                {
-                    "suite": suite["id"],
-                    "baseline": baseline,
-                    "prepared": prepared,
-                    "split": case["split"],
-                    "language": case["language"],
-                    "question": name,
-                    "pairs": 0,
-                    "wins": 0,
-                    "regressions": 0,
-                    "ties": 0,
-                },
-            )
-            if before["type"] == "score":
-                delta = before["absolute_error"] - after["absolute_error"]
-            else:
-                delta = int(after["correct"]) - int(before["correct"])
-            group["pairs"] += 1
-            if delta > 1e-9:
-                group["wins"] += 1
-            elif delta < -1e-9:
-                group["regressions"] += 1
-            else:
-                group["ties"] += 1
 
 
 def fixture_hash(suite: dict) -> str:

@@ -10,9 +10,8 @@ Start with [news topics](news_topics.md) for a small text classifier. Each walkt
 | [Refund detection](refund_detection.md) | Noul | Describe both yes and no |
 | [Evidence and claims](evidence.md) | Choice | Separate contradiction from missing evidence |
 | [Message specificity](message_specificity.md) | Score | Define ordered levels |
-| [Multilingual preparation](multilingual.md) | Choice | Translate input for an English-only model |
 
-Each example compares an **original query** with a **reworded query** that changes the question or answer descriptions. Rewording sometimes helps and sometimes makes results worse; see the [recorded results](results.md). The JSON and CLI call these `baseline` and `prepared`, respectively. The [query guide](query-guide.md) explains the changes.
+Each example sends one query written with the [query guide](query-guide.md) advice.
 
 ## Run an example
 
@@ -20,9 +19,9 @@ Start the [HTTP service](../README.md), then run these commands from the reposit
 
 ```sh
 # One case
-python3 scripts/run_examples.py --example news_topics --case case-01 --variant prepared
+python3 scripts/run_examples.py --example news_topics --case case-01
 
-# Both variants on all news cases
+# All news cases
 python3 scripts/run_examples.py --example news_topics --output reports/news_topics.json
 
 # All examples
@@ -31,7 +30,7 @@ task examples
 
 Use `--base-url` for another server and `SYSTEM_ONE_API_KEY` for authentication. For curl requests, add `-H "Authorization: Bearer $SYSTEM_ONE_API_KEY"` if needed.
 
-Add `--preview` to inspect requests without HTTP calls. A single prepared request prints as JSON you can pipe to curl; multiple selections print a list. A single case with missing preparation exits with an error.
+Add `--preview` to inspect requests without HTTP calls. A single case prints its request as JSON you can pipe to curl; a wider selection prints a list.
 
 Use `task examples EXAMPLE=materials` to run the materials example through the shared task.
 
@@ -41,9 +40,9 @@ Use `task examples EXAMPLE=materials` to run the materials example through the s
 Open the HTML file in your browser: it works offline and needs no web server.
 Any runner command with `--output` creates both files.
 
-The report shows an overview, then each input, expected answer, and actual answers
-side by side. Open **Query details** to compare wording and probabilities. Filter
-by example, answers differing from expected, or skipped/failed requests.
+The report shows an overview, then each input, expected answer, and actual answer.
+Open **Query details** to see the wording and probabilities. Filter by example,
+answers differing from expected, or failed requests.
 
 To turn an existing JSON report into HTML without calling the model:
 
@@ -52,23 +51,18 @@ task examples-report
 task examples-report REPORT=reports/examples-amd64.json
 ```
 
-Older schema-version-1 reports also work. The overview counts all inputs in the
-run; search and the **Show** filter apply to individual results.
+The overview counts all inputs in the run; search and the **Show** filter apply
+to individual results.
 
 The terminal prints summaries; `--verbose` prints every outcome. The JSON report includes inputs, expected answers, requests, responses, timings, and errors. Expected answers stay local and are never sent to Von.
 
-The JSON and terminal retain detailed groups by query, language, and dataset:
+The JSON and terminal group results by example:
 
 - Choice reports accuracy.
 - Noul reports accuracy using a probability threshold of 0.5.
 - Score reports mean absolute error from the expected level. Lower is better.
-- Paired comparisons count wins, regressions, and ties on cases answered by both variants.
 
-Missing translations and glossary matches are skipped. Check preparation coverage alongside accuracy, since skipped cases are excluded from accuracy. Direct non-English inputs are marked `unsupported_language_input: true`.
-
-**Development** cases are for editing queries; **evaluation** cases are for checking their results. Each English example, including materials, has eight of each. Multilingual has its own translation and glossary cases.
-
-Wrong predictions and missing preparations appear in the report without failing the run. Invalid fixtures, malformed responses, and unexpected HTTP errors cause a nonzero exit status.
+Wrong predictions appear in the report without failing the run. Invalid fixtures, malformed responses, and unexpected HTTP errors cause a nonzero exit status.
 
 ## Reproduce a run
 
@@ -89,7 +83,7 @@ For a remote server, supply `--runtime-metadata FILE` to record its runtime. Oth
 To measure latency after warmup:
 
 ```sh
-python3 scripts/benchmark.py --example news_topics --case case-01 --variant prepared \
+python3 scripts/benchmark.py --example news_topics --case case-01 \
   --count 40 --output reports/benchmark.json
 ```
 
@@ -97,6 +91,6 @@ The benchmark excludes five warmup requests and reports all timed samples, p50, 
 
 ## Add an example
 
-Copy an existing JSON fixture and add a Markdown walkthrough. Give the fixture an `id` matching its filename. Each variant needs a preparation method and complete questions; each case needs an input, language, split, and expected answers.
+Copy an existing JSON fixture and add a Markdown walkthrough. Give the fixture an `id` matching its filename. Each fixture needs complete `questions`; each case needs an `id`, a `state` and `expected` answers.
 
-Keep each comparison to one change. Preview the requests, then run them against the pinned service. Keep expected answers out of model inputs.
+Preview the requests, then run them against the pinned service. Keep expected answers out of model inputs.

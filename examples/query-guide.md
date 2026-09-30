@@ -47,11 +47,9 @@ You can put several questions in one request, but the pinned [backend][backend] 
 
 Von is English-only. Translate inputs and question definitions into English before sending them. Preserve ambiguity and negation, and keep the originals outside the request so you can check the translation. The [model card][card] warns that unsupported languages can produce confident errors.
 
-The [multilingual example](multilingual.md) uses fixed Italian and Spanish translations and an exact glossary. Missing translations and unknown terms remain unresolved.
+## Test a query before adopting it
 
-## Compare results before adopting a query
-
-Run the original and reworded queries on the same inputs. Use separate cases for editing a query and checking it. The [recorded results](results.md) show where answers improved or worsened; longer descriptions did not always help.
+Check a query on labelled inputs from your application before relying on it. Keep some inputs aside for a final check, and don't use them while you adjust the wording. More detailed descriptions do not guarantee better answers: in the [specificity example](message_specificity.md), a query with described levels returned 0.68 for an expected level of 3.
 
 For Choice and Score, read `probabilities` for the distribution. The separate `confidence` field adjusts the highest probability for the number of options. Noul uses raw probabilities in this service. See the [backend calculation][backend].
 

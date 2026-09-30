@@ -31,15 +31,15 @@ Read `answers.category.choice` for the selected label. The expected answer is `b
 
 “I am not asking for a new feature: the search box stopped working today” belongs to `technical_support`. Keep the negation when preparing the input.
 
-## Compare the instructions
+## About the instruction
 
-The original query asks “Classify this.” The reworded query asks “Classify the main purpose of the customer message.” Both use the same category descriptions.
+The instruction names the decision and the text to classify: “Classify the main purpose of the customer message.”
 
 ```sh
 # Run the case above
-python3 scripts/run_examples.py --example customer_requests --case case-01 --variant prepared
+python3 scripts/run_examples.py --example customer_requests --case case-01
 
-# Compare every variant on all cases
+# Run all cases
 python3 scripts/run_examples.py --example customer_requests --output reports/customer_requests.json
 ```
 

@@ -2,7 +2,7 @@
 
 Run pinned [Von](https://github.com/wfzyx/von) weights on a CPU and answer classification, yes/no and scoring questions over HTTP. The Docker image bundles the weights, so startup needs no model download.
 
-Start with the [news-topic walkthrough](examples/news_topics.md), or explore all [seven self-contained examples](examples/README.md): materials, news topics, customer requests, refund detection, evidence checks, message scoring and multilingual preparation. Each includes a complete request and a reproducible query comparison.
+Start with the [news-topic walkthrough](examples/news_topics.md), or explore all [six self-contained examples](examples/README.md): materials, news topics, customer requests, refund detection, evidence checks and message scoring. Each includes a complete request and a set of labelled cases.
 
 ## Run the service
 
@@ -22,7 +22,7 @@ The image supports `linux/amd64` and `linux/arm64`. For reproducible evaluation,
 Send `model`, `state` and `questions` to `POST /v1/systemone`. The model ID is `system-one-cpu`; responses contain `answers` and `usage`.
 
 ```sh
-python3 scripts/run_examples.py --example news_topics --case case-01 --variant prepared
+python3 scripts/run_examples.py --example news_topics --case case-01
 ```
 
 Use `--preview` to inspect the exact request without a running model. See the [query preparation guide](examples/query-guide.md) for descriptive options, explicit yes/no criteria, score interpretation and English-only input preparation.
