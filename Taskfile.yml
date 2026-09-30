@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 tasks:
   setup:
@@ -14,13 +14,23 @@ tasks:
   serve:
     desc: Run the HTTP API with local model weights
     env:
+      # Default to PyTorch on the CPU because OpenVINO is only installed on Linux;
+      # on Linux, run `task serve VON_DEVICE=openvino:cpu` for faster inference.
       VON_DEVICE: '{{.VON_DEVICE | default "cpu"}}'
+      # Return the calibrated yes/no (Noul) probability unchanged so callers
+      # can pick their own threshold (Von's default moves every answer below 0.2 or above 0.8).
       VON_NOUL_DECISION: raw
+      # Turn off Von's chains, the extra calculation steps it runs on inputs containing numbers,
+      # so every answer comes from one calibrated model pass.
       VON_CHAINS_DIR: off
+      # Cap each request's `state` at 512 tokens (the model accepts 8,192), because answers get less
+      # accurate as inputs grow and a long input delays every request queued behind it.
+      VON_MAX_STATE_TOKENS: "512"
+      # Reject a `state` longer than that limit with HTTP 422 instead of cutting out its middle,
+      # so every answer uses the full input.
       VON_ON_OVERFLOW: refuse
-      VON_MAX_STATE_TOKENS: '512'
-      HF_HUB_OFFLINE: '1'
-      TRANSFORMERS_OFFLINE: '1'
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
     cmds:
       - uv run --locked uvicorn system_one_service.app:app --host 0.0.0.0 --port 8000
 
