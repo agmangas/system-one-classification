@@ -6,7 +6,7 @@ Start with [news topics](news_topics.md) for a small text classifier. Each walkt
 | --- | --- | --- |
 | [News topics](news_topics.md) | Choice | Define categories clearly |
 | [Customer requests](customer_requests.md) | Choice | Ask a precise question |
-| [Materials](materials.md) | Choice | Handle misspellings and unlisted materials |
+| [Materials](materials.md) | Choice | Classify material names and descriptions, including unlisted materials |
 | [Refund detection](refund_detection.md) | Noul | Describe both yes and no |
 | [Evidence and claims](evidence.md) | Choice | Separate contradiction from missing evidence |
 | [Message specificity](message_specificity.md) | Score | Define ordered levels |
@@ -66,7 +66,7 @@ The JSON and terminal retain detailed groups by query, language, and dataset:
 
 Missing translations and glossary matches are skipped. Check preparation coverage alongside accuracy, since skipped cases are excluded from accuracy. Direct non-English inputs are marked `unsupported_language_input: true`.
 
-**Development** cases are for editing queries; **evaluation** cases are for checking their results. The new English examples have eight of each. Materials has 37 evaluation cases, including the older cases previously labelled `legacy`. Multilingual has its own translation and glossary cases.
+**Development** cases are for editing queries; **evaluation** cases are for checking their results. Each English example, including materials, has eight of each. Multilingual has its own translation and glossary cases.
 
 Wrong predictions and missing preparations appear in the report without failing the run. Invalid fixtures, malformed responses, and unexpected HTTP errors cause a nonzero exit status.
 

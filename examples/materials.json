@@ -2,14 +2,14 @@
   "schema_version": 1,
   "id": "materials",
   "title": "Materials classification",
-  "lesson": "Compare bare labels against self-contained material definitions. Cement belongs to the concrete catalogue group by explicit business rule.",
+  "lesson": "Classify material names and short descriptions into catalogue groups. Compare short labels with definitions and examples, including materials outside the catalogue.",
   "variants": {
     "baseline": {
       "preparation": "original",
       "questions": {
         "material": {
           "type": "choice",
-          "instructions": "Classify the material named by the input.",
+          "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
           "criteria": {
             "concrete": "concrete",
             "steel": "steel",
@@ -27,15 +27,15 @@
       "questions": {
         "material": {
           "type": "choice",
-          "instructions": "Classify the material named by the input.",
+          "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
           "criteria": {
-            "concrete": "Concrete, a mixture of cement, sand and aggregate. This catalogue also groups cement here.",
-            "steel": "Steel, an iron alloy used for metal beams, bars and reinforcement.",
-            "timber": "Timber or wood, including wooden boards and structural lumber.",
+            "concrete": "Concrete, made from cement, sand and aggregate. This group also includes cement.",
+            "steel": "Steel, an iron alloy used for beams and reinforcement bars.",
+            "timber": "Timber or wood, used for boards, flooring and furniture.",
             "brick": "Brick, a fired clay block used to build walls.",
-            "glass": "Glass, the hard transparent material used for window panes.",
-            "stone": "Natural stone or rock, including granite, marble and limestone.",
-            "unknown": "A material outside the catalogue: aluminum, plastic, copper, asphalt, gypsum, rubber, or another material that is not concrete, cement, steel, timber, brick, glass or stone."
+            "glass": "Glass, used for window panes and bottles.",
+            "stone": "Natural stone, such as granite, marble and limestone.",
+            "unknown": "A material outside the concrete, steel, timber, brick, glass and stone groups, such as plastic, copper or aluminum."
           }
         }
       }
@@ -49,411 +49,148 @@
   ],
   "cases": [
     {
-      "id": "en-concrete-1",
+      "id": "case-01",
+      "state": "concrete",
       "language": "en",
-      "kind": "typo",
-      "input": "concreet",
+      "split": "development",
       "expected": {
         "material": "concrete"
-      },
-      "state": "Misspelled material name: concreet",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-concrete-2",
+      "id": "case-02",
+      "state": "steel reinforcement bars",
       "language": "en",
-      "kind": "typo",
-      "input": "concret",
-      "expected": {
-        "material": "concrete"
-      },
-      "state": "Misspelled material name: concret",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-concrete-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "conncrete",
-      "expected": {
-        "material": "concrete"
-      },
-      "state": "Misspelled material name: conncrete",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-concrete-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "concreye",
-      "expected": {
-        "material": "concrete"
-      },
-      "state": "Misspelled material name: concreye",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-steel-1",
-      "language": "en",
-      "kind": "typo",
-      "input": "steeel",
+      "split": "development",
       "expected": {
         "material": "steel"
-      },
-      "state": "Misspelled material name: steeel",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-steel-2",
+      "id": "case-03",
+      "state": "wood",
       "language": "en",
-      "kind": "typo",
-      "input": "stel",
-      "expected": {
-        "material": "steel"
-      },
-      "state": "Misspelled material name: stel",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-steel-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "sttel",
-      "expected": {
-        "material": "steel"
-      },
-      "state": "Misspelled material name: sttel",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-steel-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "setel",
-      "expected": {
-        "material": "steel"
-      },
-      "state": "Misspelled material name: setel",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-timber-1",
-      "language": "en",
-      "kind": "typo",
-      "input": "timbr",
+      "split": "development",
       "expected": {
         "material": "timber"
-      },
-      "state": "Misspelled material name: timbr",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-timber-2",
+      "id": "case-04",
+      "state": "clay bricks",
       "language": "en",
-      "kind": "typo",
-      "input": "timmber",
-      "expected": {
-        "material": "timber"
-      },
-      "state": "Misspelled material name: timmber",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-timber-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "tibmer",
-      "expected": {
-        "material": "timber"
-      },
-      "state": "Misspelled material name: tibmer",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-timber-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "timberr",
-      "expected": {
-        "material": "timber"
-      },
-      "state": "Misspelled material name: timberr",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-brick-1",
-      "language": "en",
-      "kind": "typo",
-      "input": "brik",
+      "split": "development",
       "expected": {
         "material": "brick"
-      },
-      "state": "Misspelled material name: brik",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-brick-2",
+      "id": "case-05",
+      "state": "window glass",
       "language": "en",
-      "kind": "typo",
-      "input": "brrick",
-      "expected": {
-        "material": "brick"
-      },
-      "state": "Misspelled material name: brrick",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-brick-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "brcik",
-      "expected": {
-        "material": "brick"
-      },
-      "state": "Misspelled material name: brcik",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-brick-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "bricj",
-      "expected": {
-        "material": "brick"
-      },
-      "state": "Misspelled material name: bricj",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-glass-1",
-      "language": "en",
-      "kind": "typo",
-      "input": "glas",
+      "split": "development",
       "expected": {
         "material": "glass"
-      },
-      "state": "Misspelled material name: glas",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-glass-2",
+      "id": "case-06",
+      "state": "granite",
       "language": "en",
-      "kind": "typo",
-      "input": "gllass",
-      "expected": {
-        "material": "glass"
-      },
-      "state": "Misspelled material name: gllass",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-glass-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "galss",
-      "expected": {
-        "material": "glass"
-      },
-      "state": "Misspelled material name: galss",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-glass-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "glsss",
-      "expected": {
-        "material": "glass"
-      },
-      "state": "Misspelled material name: glsss",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-stone-1",
-      "language": "en",
-      "kind": "typo",
-      "input": "stonn",
+      "split": "development",
       "expected": {
         "material": "stone"
-      },
-      "state": "Misspelled material name: stonn",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-stone-2",
+      "id": "case-07",
+      "state": "plastic",
       "language": "en",
-      "kind": "typo",
-      "input": "ston",
-      "expected": {
-        "material": "stone"
-      },
-      "state": "Misspelled material name: ston",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-stone-3",
-      "language": "en",
-      "kind": "typo",
-      "input": "sttone",
-      "expected": {
-        "material": "stone"
-      },
-      "state": "Misspelled material name: sttone",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-stone-4",
-      "language": "en",
-      "kind": "typo",
-      "input": "stnoe",
-      "expected": {
-        "material": "stone"
-      },
-      "state": "Misspelled material name: stnoe",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-other-1",
-      "language": "en",
-      "kind": "out_of_set",
-      "input": "alumnium",
+      "split": "development",
       "expected": {
         "material": "unknown"
-      },
-      "state": "Misspelled material name: alumnium",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "en-other-2",
+      "id": "case-08",
+      "state": "cement",
       "language": "en",
-      "kind": "out_of_set",
-      "input": "plasstic",
-      "expected": {
-        "material": "unknown"
-      },
-      "state": "Misspelled material name: plasstic",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-other-3",
-      "language": "en",
-      "kind": "out_of_set",
-      "input": "copperr",
-      "expected": {
-        "material": "unknown"
-      },
-      "state": "Misspelled material name: copperr",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-other-4",
-      "language": "en",
-      "kind": "out_of_set",
-      "input": "asphallt",
-      "expected": {
-        "material": "unknown"
-      },
-      "state": "Misspelled material name: asphallt",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-other-5",
-      "language": "en",
-      "kind": "out_of_set",
-      "input": "gypsumm",
-      "expected": {
-        "material": "unknown"
-      },
-      "state": "Misspelled material name: gypsumm",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-other-6",
-      "language": "en",
-      "kind": "out_of_set",
-      "input": "rubbr",
-      "expected": {
-        "material": "unknown"
-      },
-      "state": "Misspelled material name: rubbr",
-      "split": "evaluation"
-    },
-    {
-      "id": "en-cement",
-      "language": "en",
-      "kind": "related",
-      "input": "cemant",
+      "split": "development",
       "expected": {
         "material": "concrete"
-      },
-      "state": "Misspelled material name: cemant",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-concrete",
-      "language": "it",
-      "kind": "typo",
-      "input": "calcestruzo",
+      "id": "case-09",
+      "state": "ready-mix concrete",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "concrete"
-      },
-      "state": "Misspelled material name: calcestruzo",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-steel",
-      "language": "it",
-      "kind": "typo",
-      "input": "aciaio",
+      "id": "case-10",
+      "state": "steeel",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "steel"
-      },
-      "state": "Misspelled material name: aciaio",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-timber",
-      "language": "it",
-      "kind": "typo",
-      "input": "legnno",
+      "id": "case-11",
+      "state": "oak floorboards",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "timber"
-      },
-      "state": "Misspelled material name: legnno",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-brick",
-      "language": "it",
-      "kind": "typo",
-      "input": "matone",
+      "id": "case-12",
+      "state": "brik",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "brick"
-      },
-      "state": "Misspelled material name: matone",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-glass",
-      "language": "it",
-      "kind": "typo",
-      "input": "vettro",
+      "id": "case-13",
+      "state": "glass bottles",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "glass"
-      },
-      "state": "Misspelled material name: vettro",
-      "split": "evaluation"
+      }
     },
     {
-      "id": "it-stone",
-      "language": "it",
-      "kind": "typo",
-      "input": "pietrra",
+      "id": "case-14",
+      "state": "marble tiles",
+      "language": "en",
+      "split": "evaluation",
       "expected": {
         "material": "stone"
-      },
-      "state": "Misspelled material name: pietrra",
-      "split": "evaluation"
+      }
+    },
+    {
+      "id": "case-15",
+      "state": "copper pipe",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "material": "unknown"
+      }
+    },
+    {
+      "id": "case-16",
+      "state": "aluminum sheet",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "material": "unknown"
+      }
     }
   ]
 }
