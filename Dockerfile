@@ -27,7 +27,7 @@ COPY scripts/download_weights.py ./scripts/download_weights.py
 COPY model ./model
 RUN .venv/bin/python scripts/download_weights.py
 
-COPY scripts/validate_materials.py scripts/benchmark.py scripts/sdk_smoke.py ./scripts/
+COPY scripts ./scripts
 COPY examples ./examples
 COPY LICENSE THIRD_PARTY_NOTICES.md ./
 COPY licenses ./licenses

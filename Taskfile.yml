@@ -46,14 +46,19 @@ tasks:
     deps: [lint, test]
 
   materials:
-    desc: Evaluate English and Italian material fixtures over HTTP
+    desc: Evaluate the materials example (compatibility command)
     cmds:
       - python3 scripts/validate_materials.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/materials.json
 
-  benchmark:
-    desc: Measure short-request HTTP latency
+  examples:
+    desc: Run all examples, or select with EXAMPLE and CLI arguments after --
     cmds:
-      - python3 scripts/benchmark.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --max-p95 1.0
+      - python3 scripts/run_examples.py --example {{.EXAMPLE | default "all"}} --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/examples.json {{.CLI_ARGS}}
+
+  benchmark:
+    desc: Measure warm HTTP latency for a selected example
+    cmds:
+      - python3 scripts/benchmark.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/benchmark.json {{.CLI_ARGS}}
 
   sdk-smoke:
     desc: Check Von HTTP SDK compatibility against a running service

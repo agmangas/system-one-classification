@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "id": "evidence",
+  "title": "Evidence and claims",
+  "lesson": "Change only option descriptions. Missing evidence is an explicit category, not a false claim.",
+  "variants": {
+    "baseline": {
+      "preparation": "original",
+      "questions": {
+        "relation": {
+          "type": "choice",
+          "instructions": "Using only the record, determine whether it supports the claim.",
+          "criteria": {
+            "supported": "supported",
+            "contradicted": "contradicted",
+            "insufficient_evidence": "insufficient evidence"
+          }
+        }
+      }
+    },
+    "prepared": {
+      "preparation": "original",
+      "questions": {
+        "relation": {
+          "type": "choice",
+          "instructions": "Using only the record, determine whether it supports the claim.",
+          "criteria": {
+            "supported": "The record provides evidence that the claim is true.",
+            "contradicted": "The record provides evidence that conflicts with the claim.",
+            "insufficient_evidence": "The record neither establishes the claim nor contradicts it; the needed fact is missing."
+          }
+        }
+      }
+    }
+  },
+  "comparisons": [
+    [
+      "baseline",
+      "prepared"
+    ]
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "state": {
+        "record": "The parcel was delivered on Tuesday.",
+        "claim": "The parcel arrived on Tuesday."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "supported"
+      }
+    },
+    {
+      "id": "case-02",
+      "state": {
+        "record": "The parcel was delivered on Tuesday.",
+        "claim": "The parcel arrived on Monday."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "contradicted"
+      }
+    },
+    {
+      "id": "case-03",
+      "state": {
+        "record": "The parcel was dispatched on Monday.",
+        "claim": "The parcel arrived on Tuesday."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "insufficient_evidence"
+      }
+    },
+    {
+      "id": "case-04",
+      "state": {
+        "record": "The door was locked when the guard arrived.",
+        "claim": "The guard found the door locked."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "supported"
+      }
+    },
+    {
+      "id": "case-05",
+      "state": {
+        "record": "The room was empty at noon.",
+        "claim": "Someone was in the room at noon."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "contradicted"
+      }
+    },
+    {
+      "id": "case-06",
+      "state": {
+        "record": "The room has two windows.",
+        "claim": "The windows were open at noon."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "insufficient_evidence"
+      }
+    },
+    {
+      "id": "case-07",
+      "state": {
+        "record": "The customer paid the invoice in full.",
+        "claim": "No payment remains due on that invoice."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "supported"
+      }
+    },
+    {
+      "id": "case-08",
+      "state": {
+        "record": "The meeting was cancelled.",
+        "claim": "The meeting went ahead as scheduled."
+      },
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "relation": "contradicted"
+      }
+    },
+    {
+      "id": "case-09",
+      "state": {
+        "record": "The parcel has a tracking number.",
+        "claim": "The parcel has been delivered."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "insufficient_evidence"
+      }
+    },
+    {
+      "id": "case-10",
+      "state": {
+        "record": "The parcel was not delivered on Friday.",
+        "claim": "The parcel arrived on Friday."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "contradicted"
+      }
+    },
+    {
+      "id": "case-11",
+      "state": {
+        "record": "The shop opens at nine on Mondays.",
+        "claim": "The shop opens at nine on Monday."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "supported"
+      }
+    },
+    {
+      "id": "case-12",
+      "state": {
+        "record": "The booking is for two guests.",
+        "claim": "Both guests have checked in."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "insufficient_evidence"
+      }
+    },
+    {
+      "id": "case-13",
+      "state": {
+        "record": "The light remained off throughout the inspection.",
+        "claim": "The light was on during the inspection."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "contradicted"
+      }
+    },
+    {
+      "id": "case-14",
+      "state": {
+        "record": "Mira submitted the report before the deadline.",
+        "claim": "Mira submitted the report on time."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "supported"
+      }
+    },
+    {
+      "id": "case-15",
+      "state": {
+        "record": "The report contains three photographs.",
+        "claim": "The photographs were taken outdoors."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "insufficient_evidence"
+      }
+    },
+    {
+      "id": "case-16",
+      "state": {
+        "record": "Only the blue box was opened; the red box stayed sealed.",
+        "claim": "The red box was opened."
+      },
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "relation": "contradicted"
+      }
+    }
+  ]
+}

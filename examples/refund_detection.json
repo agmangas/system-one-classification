@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "refund_detection",
+  "title": "Explicit request detection",
+  "lesson": "Change only the presence of explicit true/false criteria. The 0.5 cutoff is a demonstration convention.",
+  "variants": {
+    "baseline": {
+      "preparation": "original",
+      "questions": {
+        "refund_requested": {
+          "type": "noul",
+          "instructions": "Does the author explicitly request a refund?"
+        }
+      }
+    },
+    "prepared": {
+      "preparation": "original",
+      "questions": {
+        "refund_requested": {
+          "type": "noul",
+          "instructions": "Does the author explicitly request a refund?",
+          "criteria": {
+            "true": "The author asks to have a payment returned or a charge reversed.",
+            "false": "The author does not ask for money back; they may discuss refunds, ask about policy, or explicitly decline a refund."
+          }
+        }
+      }
+    }
+  },
+  "comparisons": [
+    [
+      "baseline",
+      "prepared"
+    ]
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "state": "Please return my payment.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-02",
+      "state": "I want a refund for this order.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-03",
+      "state": "Could you reverse the duplicate charge?",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-04",
+      "state": "Please give me my money back.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-05",
+      "state": "What is your refund policy?",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-06",
+      "state": "My refund arrived yesterday, thank you.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-07",
+      "state": "Please replace the item. I do not want a refund.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-08",
+      "state": "The package arrived on time.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-09",
+      "state": "The replacement is unsuitable. Please refund the purchase price.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-10",
+      "state": "I would like the amount I paid to be returned to my card.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-11",
+      "state": "Do not send another replacement; send my money back instead.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-12",
+      "state": "Please reimburse me for the cancelled order.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": true
+      }
+    },
+    {
+      "id": "case-13",
+      "state": "The help page mentions refunds, but I only need delivery information.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-14",
+      "state": "Do not refund me. Please repair the item.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-15",
+      "state": "A refund would be possible under your policy. Can you explain the repair option?",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": false
+      }
+    },
+    {
+      "id": "case-16",
+      "state": "You already returned the money; this message is just a thank-you.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "refund_requested": false
+      }
+    }
+  ]
+}

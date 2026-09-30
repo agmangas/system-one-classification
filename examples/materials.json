@@ -1,51 +1,459 @@
 {
-  "instructions": "Classify the material named by the input.",
-  "criteria": {
-    "concrete": "concrete",
-    "steel": "steel",
-    "timber": "timber",
-    "brick": "brick",
-    "glass": "glass",
-    "stone": "stone",
-    "unknown": "Aluminum, plastic, copper, or other unlisted materials"
+  "schema_version": 1,
+  "id": "materials",
+  "title": "Materials classification",
+  "lesson": "Compare bare labels against self-contained material definitions. Cement belongs to the concrete catalogue group by explicit business rule.",
+  "variants": {
+    "baseline": {
+      "preparation": "original",
+      "questions": {
+        "material": {
+          "type": "choice",
+          "instructions": "Classify the material named by the input.",
+          "criteria": {
+            "concrete": "concrete",
+            "steel": "steel",
+            "timber": "timber",
+            "brick": "brick",
+            "glass": "glass",
+            "stone": "stone",
+            "unknown": "Aluminum, plastic, copper, or other unlisted materials"
+          }
+        }
+      }
+    },
+    "prepared": {
+      "preparation": "original",
+      "questions": {
+        "material": {
+          "type": "choice",
+          "instructions": "Classify the material named by the input.",
+          "criteria": {
+            "concrete": "Concrete, a mixture of cement, sand and aggregate. This catalogue also groups cement here.",
+            "steel": "Steel, an iron alloy used for metal beams, bars and reinforcement.",
+            "timber": "Timber or wood, including wooden boards and structural lumber.",
+            "brick": "Brick, a fired clay block used to build walls.",
+            "glass": "Glass, the hard transparent material used for window panes.",
+            "stone": "Natural stone or rock, including granite, marble and limestone.",
+            "unknown": "A material outside the catalogue: aluminum, plastic, copper, asphalt, gypsum, rubber, or another material that is not concrete, cement, steel, timber, brick, glass or stone."
+          }
+        }
+      }
+    }
   },
+  "comparisons": [
+    [
+      "baseline",
+      "prepared"
+    ]
+  ],
   "cases": [
-    {"id": "en-concrete-1", "language": "en", "kind": "typo", "input": "concreet", "expected": "concrete"},
-    {"id": "en-concrete-2", "language": "en", "kind": "typo", "input": "concret", "expected": "concrete"},
-    {"id": "en-concrete-3", "language": "en", "kind": "typo", "input": "conncrete", "expected": "concrete"},
-    {"id": "en-concrete-4", "language": "en", "kind": "typo", "input": "concreye", "expected": "concrete"},
-    {"id": "en-steel-1", "language": "en", "kind": "typo", "input": "steeel", "expected": "steel"},
-    {"id": "en-steel-2", "language": "en", "kind": "typo", "input": "stel", "expected": "steel"},
-    {"id": "en-steel-3", "language": "en", "kind": "typo", "input": "sttel", "expected": "steel"},
-    {"id": "en-steel-4", "language": "en", "kind": "typo", "input": "setel", "expected": "steel"},
-    {"id": "en-timber-1", "language": "en", "kind": "typo", "input": "timbr", "expected": "timber"},
-    {"id": "en-timber-2", "language": "en", "kind": "typo", "input": "timmber", "expected": "timber"},
-    {"id": "en-timber-3", "language": "en", "kind": "typo", "input": "tibmer", "expected": "timber"},
-    {"id": "en-timber-4", "language": "en", "kind": "typo", "input": "timberr", "expected": "timber"},
-    {"id": "en-brick-1", "language": "en", "kind": "typo", "input": "brik", "expected": "brick"},
-    {"id": "en-brick-2", "language": "en", "kind": "typo", "input": "brrick", "expected": "brick"},
-    {"id": "en-brick-3", "language": "en", "kind": "typo", "input": "brcik", "expected": "brick"},
-    {"id": "en-brick-4", "language": "en", "kind": "typo", "input": "bricj", "expected": "brick"},
-    {"id": "en-glass-1", "language": "en", "kind": "typo", "input": "glas", "expected": "glass"},
-    {"id": "en-glass-2", "language": "en", "kind": "typo", "input": "gllass", "expected": "glass"},
-    {"id": "en-glass-3", "language": "en", "kind": "typo", "input": "galss", "expected": "glass"},
-    {"id": "en-glass-4", "language": "en", "kind": "typo", "input": "glsss", "expected": "glass"},
-    {"id": "en-stone-1", "language": "en", "kind": "typo", "input": "stonn", "expected": "stone"},
-    {"id": "en-stone-2", "language": "en", "kind": "typo", "input": "ston", "expected": "stone"},
-    {"id": "en-stone-3", "language": "en", "kind": "typo", "input": "sttone", "expected": "stone"},
-    {"id": "en-stone-4", "language": "en", "kind": "typo", "input": "stnoe", "expected": "stone"},
-    {"id": "en-other-1", "language": "en", "kind": "out_of_set", "input": "alumnium", "expected": "unknown"},
-    {"id": "en-other-2", "language": "en", "kind": "out_of_set", "input": "plasstic", "expected": "unknown"},
-    {"id": "en-other-3", "language": "en", "kind": "out_of_set", "input": "copperr", "expected": "unknown"},
-    {"id": "en-other-4", "language": "en", "kind": "out_of_set", "input": "asphallt", "expected": "unknown"},
-    {"id": "en-other-5", "language": "en", "kind": "out_of_set", "input": "gypsumm", "expected": "unknown"},
-    {"id": "en-other-6", "language": "en", "kind": "out_of_set", "input": "rubbr", "expected": "unknown"},
-    {"id": "en-cement", "language": "en", "kind": "related", "input": "cemant", "expected": "concrete"},
-    {"id": "it-concrete", "language": "it", "kind": "typo", "input": "calcestruzo", "expected": "concrete"},
-    {"id": "it-steel", "language": "it", "kind": "typo", "input": "aciaio", "expected": "steel"},
-    {"id": "it-timber", "language": "it", "kind": "typo", "input": "legnno", "expected": "timber"},
-    {"id": "it-brick", "language": "it", "kind": "typo", "input": "matone", "expected": "brick"},
-    {"id": "it-glass", "language": "it", "kind": "typo", "input": "vettro", "expected": "glass"},
-    {"id": "it-stone", "language": "it", "kind": "typo", "input": "pietrra", "expected": "stone"}
+    {
+      "id": "en-concrete-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "concreet",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: concreet",
+      "split": "legacy"
+    },
+    {
+      "id": "en-concrete-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "concret",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: concret",
+      "split": "legacy"
+    },
+    {
+      "id": "en-concrete-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "conncrete",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: conncrete",
+      "split": "legacy"
+    },
+    {
+      "id": "en-concrete-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "concreye",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: concreye",
+      "split": "legacy"
+    },
+    {
+      "id": "en-steel-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "steeel",
+      "expected": {
+        "material": "steel"
+      },
+      "state": "Misspelled material name: steeel",
+      "split": "legacy"
+    },
+    {
+      "id": "en-steel-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "stel",
+      "expected": {
+        "material": "steel"
+      },
+      "state": "Misspelled material name: stel",
+      "split": "legacy"
+    },
+    {
+      "id": "en-steel-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "sttel",
+      "expected": {
+        "material": "steel"
+      },
+      "state": "Misspelled material name: sttel",
+      "split": "legacy"
+    },
+    {
+      "id": "en-steel-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "setel",
+      "expected": {
+        "material": "steel"
+      },
+      "state": "Misspelled material name: setel",
+      "split": "legacy"
+    },
+    {
+      "id": "en-timber-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "timbr",
+      "expected": {
+        "material": "timber"
+      },
+      "state": "Misspelled material name: timbr",
+      "split": "legacy"
+    },
+    {
+      "id": "en-timber-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "timmber",
+      "expected": {
+        "material": "timber"
+      },
+      "state": "Misspelled material name: timmber",
+      "split": "legacy"
+    },
+    {
+      "id": "en-timber-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "tibmer",
+      "expected": {
+        "material": "timber"
+      },
+      "state": "Misspelled material name: tibmer",
+      "split": "legacy"
+    },
+    {
+      "id": "en-timber-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "timberr",
+      "expected": {
+        "material": "timber"
+      },
+      "state": "Misspelled material name: timberr",
+      "split": "legacy"
+    },
+    {
+      "id": "en-brick-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "brik",
+      "expected": {
+        "material": "brick"
+      },
+      "state": "Misspelled material name: brik",
+      "split": "legacy"
+    },
+    {
+      "id": "en-brick-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "brrick",
+      "expected": {
+        "material": "brick"
+      },
+      "state": "Misspelled material name: brrick",
+      "split": "legacy"
+    },
+    {
+      "id": "en-brick-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "brcik",
+      "expected": {
+        "material": "brick"
+      },
+      "state": "Misspelled material name: brcik",
+      "split": "legacy"
+    },
+    {
+      "id": "en-brick-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "bricj",
+      "expected": {
+        "material": "brick"
+      },
+      "state": "Misspelled material name: bricj",
+      "split": "legacy"
+    },
+    {
+      "id": "en-glass-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "glas",
+      "expected": {
+        "material": "glass"
+      },
+      "state": "Misspelled material name: glas",
+      "split": "legacy"
+    },
+    {
+      "id": "en-glass-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "gllass",
+      "expected": {
+        "material": "glass"
+      },
+      "state": "Misspelled material name: gllass",
+      "split": "legacy"
+    },
+    {
+      "id": "en-glass-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "galss",
+      "expected": {
+        "material": "glass"
+      },
+      "state": "Misspelled material name: galss",
+      "split": "legacy"
+    },
+    {
+      "id": "en-glass-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "glsss",
+      "expected": {
+        "material": "glass"
+      },
+      "state": "Misspelled material name: glsss",
+      "split": "legacy"
+    },
+    {
+      "id": "en-stone-1",
+      "language": "en",
+      "kind": "typo",
+      "input": "stonn",
+      "expected": {
+        "material": "stone"
+      },
+      "state": "Misspelled material name: stonn",
+      "split": "legacy"
+    },
+    {
+      "id": "en-stone-2",
+      "language": "en",
+      "kind": "typo",
+      "input": "ston",
+      "expected": {
+        "material": "stone"
+      },
+      "state": "Misspelled material name: ston",
+      "split": "legacy"
+    },
+    {
+      "id": "en-stone-3",
+      "language": "en",
+      "kind": "typo",
+      "input": "sttone",
+      "expected": {
+        "material": "stone"
+      },
+      "state": "Misspelled material name: sttone",
+      "split": "legacy"
+    },
+    {
+      "id": "en-stone-4",
+      "language": "en",
+      "kind": "typo",
+      "input": "stnoe",
+      "expected": {
+        "material": "stone"
+      },
+      "state": "Misspelled material name: stnoe",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-1",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "alumnium",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: alumnium",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-2",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "plasstic",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: plasstic",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-3",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "copperr",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: copperr",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-4",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "asphallt",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: asphallt",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-5",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "gypsumm",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: gypsumm",
+      "split": "legacy"
+    },
+    {
+      "id": "en-other-6",
+      "language": "en",
+      "kind": "out_of_set",
+      "input": "rubbr",
+      "expected": {
+        "material": "unknown"
+      },
+      "state": "Misspelled material name: rubbr",
+      "split": "legacy"
+    },
+    {
+      "id": "en-cement",
+      "language": "en",
+      "kind": "related",
+      "input": "cemant",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: cemant",
+      "split": "legacy"
+    },
+    {
+      "id": "it-concrete",
+      "language": "it",
+      "kind": "typo",
+      "input": "calcestruzo",
+      "expected": {
+        "material": "concrete"
+      },
+      "state": "Misspelled material name: calcestruzo",
+      "split": "legacy"
+    },
+    {
+      "id": "it-steel",
+      "language": "it",
+      "kind": "typo",
+      "input": "aciaio",
+      "expected": {
+        "material": "steel"
+      },
+      "state": "Misspelled material name: aciaio",
+      "split": "legacy"
+    },
+    {
+      "id": "it-timber",
+      "language": "it",
+      "kind": "typo",
+      "input": "legnno",
+      "expected": {
+        "material": "timber"
+      },
+      "state": "Misspelled material name: legnno",
+      "split": "legacy"
+    },
+    {
+      "id": "it-brick",
+      "language": "it",
+      "kind": "typo",
+      "input": "matone",
+      "expected": {
+        "material": "brick"
+      },
+      "state": "Misspelled material name: matone",
+      "split": "legacy"
+    },
+    {
+      "id": "it-glass",
+      "language": "it",
+      "kind": "typo",
+      "input": "vettro",
+      "expected": {
+        "material": "glass"
+      },
+      "state": "Misspelled material name: vettro",
+      "split": "legacy"
+    },
+    {
+      "id": "it-stone",
+      "language": "it",
+      "kind": "typo",
+      "input": "pietrra",
+      "expected": {
+        "material": "stone"
+      },
+      "state": "Misspelled material name: pietrra",
+      "split": "legacy"
+    }
   ]
 }

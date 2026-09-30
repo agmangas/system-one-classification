@@ -1,60 +1,72 @@
-"""Measure warm HTTP p95 for one short material classification request."""
+"""Measure warm HTTP latency for any prepared example request."""
 
 import argparse
 import json
 import math
-import os
 import statistics
 import time
 from pathlib import Path
-from urllib.request import Request, urlopen
 
-ROOT = Path(__file__).resolve().parents[1]
+from example_support import (
+    fixture_hash,
+    load_suites,
+    prepare_request,
+    request_json,
+    selected_cases,
+    validate_response,
+)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
+    parser.add_argument("--example", default="news_topics")
+    parser.add_argument("--case", default="case-01")
+    parser.add_argument("--variant", default="prepared")
     parser.add_argument("--count", type=int, default=40)
-    parser.add_argument("--max-p95", type=float, default=1.0)
+    parser.add_argument("--max-p95", type=float)
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    fixture = json.loads((ROOT / "examples/materials.json").read_text())
-    body = json.dumps(
-        {
-            "model": "system-one-cpu",
-            "state": "concreet",
-            "questions": {
-                "material": {
-                    "type": "choice",
-                    "instructions": fixture["instructions"],
-                    "criteria": fixture["criteria"],
-                }
-            },
+    if args.count < 1 or (args.max_p95 is not None and args.max_p95 <= 0):
+        parser.error("count and max-p95 must be positive")
+    try:
+        selections = selected_cases(load_suites(args.example), args.case, args.variant)
+        if len(selections) != 1:
+            raise ValueError("select exactly one example, case and variant to benchmark")
+        suite, case, variant = selections[0]
+        payload, reason = prepare_request(suite, case, variant)
+        if reason:
+            raise ValueError(reason)
+        timings = []
+        for index in range(args.count + 5):
+            start = time.perf_counter()
+            response = request_json(args.base_url.rstrip("/") + "/v1/systemone", payload)
+            elapsed = time.perf_counter() - start
+            validate_response(payload, response)
+            if index >= 5:
+                timings.append(elapsed)
+        p95 = sorted(timings)[math.ceil(0.95 * len(timings)) - 1]
+        report = {
+            "example": suite["id"],
+            "case": case["id"],
+            "variant": variant,
+            "fixture_hash": fixture_hash(suite),
+            "request": payload,
+            "server_models": request_json(args.base_url.rstrip("/") + "/v1/models"),
+            "warmup_requests": 5,
+            "requests": len(timings),
+            "timings_s": timings,
+            "p50_s": statistics.median(timings),
+            "p95_s": p95,
+            "target_s": args.max_p95,
         }
-    ).encode()
-    headers = {"Content-Type": "application/json"}
-    if key := os.environ.get("SYSTEM_ONE_API_KEY"):
-        headers["Authorization"] = f"Bearer {key}"
-    timings = []
-    for index in range(args.count + 5):
-        request = Request(args.base_url.rstrip("/") + "/v1/systemone", data=body, headers=headers)
-        start = time.perf_counter()
-        with urlopen(request, timeout=120) as response:
-            json.load(response)
-        if index >= 5:
-            timings.append(time.perf_counter() - start)
-    p95 = sorted(timings)[math.ceil(0.95 * len(timings)) - 1]
-    print(
-        json.dumps(
-            {
-                "requests": len(timings),
-                "p50_s": round(statistics.median(timings), 4),
-                "p95_s": round(p95, 4),
-                "target_s": args.max_p95,
-            }
-        )
-    )
-    return 0 if p95 < args.max_p95 else 1
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(report, indent=2) + "\n")
+        print(json.dumps(report, indent=2))
+        return int(args.max_p95 is not None and p95 >= args.max_p95)
+    except (RuntimeError, ValueError) as exc:
+        parser.exit(1, f"benchmark: {exc}\n")
 
 
 if __name__ == "__main__":

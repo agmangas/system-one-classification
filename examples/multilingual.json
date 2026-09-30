@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "id": "multilingual",
+  "title": "Multilingual preparation",
+  "lesson": "Compare direct text with checked-in English translations and exact glossary preparation. The model is English-only.",
+  "variants": {
+    "direct": {
+      "preparation": "original",
+      "questions": {
+        "material": {
+          "type": "choice",
+          "instructions": "Identify the single material described by the text.",
+          "criteria": {
+            "concrete": "Concrete, a building material made of cement, sand and aggregate.",
+            "steel": "Steel, an iron alloy used for metal beams, bars and reinforcement.",
+            "timber": "Timber or wood, including wooden boards and structural lumber.",
+            "brick": "Brick, a fired clay block used to build walls.",
+            "glass": "Glass, the hard transparent material used for window panes.",
+            "stone": "Natural stone or rock, including granite, marble and limestone.",
+            "unknown": "An explicitly named material outside this catalogue, such as copper, plastic, aluminum or rubber.",
+            "unclear": "No single material can be identified: the material is unspecified or several alternatives remain possible."
+          }
+        }
+      }
+    },
+    "translated": {
+      "preparation": "translation",
+      "questions": {
+        "material": {
+          "type": "choice",
+          "instructions": "Identify the single material described by the text.",
+          "criteria": {
+            "concrete": "Concrete, a building material made of cement, sand and aggregate.",
+            "steel": "Steel, an iron alloy used for metal beams, bars and reinforcement.",
+            "timber": "Timber or wood, including wooden boards and structural lumber.",
+            "brick": "Brick, a fired clay block used to build walls.",
+            "glass": "Glass, the hard transparent material used for window panes.",
+            "stone": "Natural stone or rock, including granite, marble and limestone.",
+            "unknown": "An explicitly named material outside this catalogue, such as copper, plastic, aluminum or rubber.",
+            "unclear": "No single material can be identified: the material is unspecified or several alternatives remain possible."
+          }
+        }
+      }
+    },
+    "glossary": {
+      "preparation": "glossary",
+      "questions": {
+        "material": {
+          "type": "choice",
+          "instructions": "Identify the single material described by the text.",
+          "criteria": {
+            "concrete": "Concrete, a building material made of cement, sand and aggregate.",
+            "steel": "Steel, an iron alloy used for metal beams, bars and reinforcement.",
+            "timber": "Timber or wood, including wooden boards and structural lumber.",
+            "brick": "Brick, a fired clay block used to build walls.",
+            "glass": "Glass, the hard transparent material used for window panes.",
+            "stone": "Natural stone or rock, including granite, marble and limestone.",
+            "unknown": "An explicitly named material outside this catalogue, such as copper, plastic, aluminum or rubber.",
+            "unclear": "No single material can be identified: the material is unspecified or several alternatives remain possible."
+          }
+        }
+      }
+    }
+  },
+  "comparisons": [
+    [
+      "direct",
+      "translated"
+    ],
+    [
+      "direct",
+      "glossary"
+    ]
+  ],
+  "glossary": {
+    "en": {
+      "wood": "wood",
+      "steel": "steel",
+      "copper": "copper",
+      "concrete": "concrete"
+    },
+    "it": {
+      "legno": "wood",
+      "acciaio": "steel",
+      "rame": "copper",
+      "calcestruzzo": "concrete",
+      "legnno": "wood"
+    },
+    "es": {
+      "madera": "wood",
+      "acero": "steel",
+      "cobre": "copper",
+      "hormigón": "concrete"
+    }
+  },
+  "cases": [
+    {
+      "id": "en-wood",
+      "state": "wood",
+      "translation": "wood",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "material": "timber"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-wood",
+      "state": "legno",
+      "translation": "wood",
+      "language": "it",
+      "split": "development",
+      "expected": {
+        "material": "timber"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-wood",
+      "state": "madera",
+      "translation": "wood",
+      "language": "es",
+      "split": "development",
+      "expected": {
+        "material": "timber"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "en-steel",
+      "state": "steel",
+      "translation": "steel",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "material": "steel"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-steel",
+      "state": "acciaio",
+      "translation": "steel",
+      "language": "it",
+      "split": "development",
+      "expected": {
+        "material": "steel"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-steel",
+      "state": "acero",
+      "translation": "steel",
+      "language": "es",
+      "split": "development",
+      "expected": {
+        "material": "steel"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "en-copper",
+      "state": "copper",
+      "translation": "copper",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "material": "unknown"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-copper",
+      "state": "rame",
+      "translation": "copper",
+      "language": "it",
+      "split": "development",
+      "expected": {
+        "material": "unknown"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-copper",
+      "state": "cobre",
+      "translation": "copper",
+      "language": "es",
+      "split": "development",
+      "expected": {
+        "material": "unknown"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "en-negation",
+      "state": "The panel is glass, not steel.",
+      "translation": "The panel is glass, not steel.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "material": "glass"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-negation",
+      "state": "Il pannello è di vetro, non di acciaio.",
+      "translation": "The panel is glass, not steel.",
+      "language": "it",
+      "split": "evaluation",
+      "expected": {
+        "material": "glass"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-negation",
+      "state": "El panel es de vidrio, no de acero.",
+      "translation": "The panel is glass, not steel.",
+      "language": "es",
+      "split": "evaluation",
+      "expected": {
+        "material": "glass"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "en-ambiguous",
+      "state": "The panel could be glass or steel.",
+      "translation": "The panel could be glass or steel.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "material": "unclear"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-ambiguous",
+      "state": "Il pannello potrebbe essere di vetro o di acciaio.",
+      "translation": "The panel could be glass or steel.",
+      "language": "it",
+      "split": "evaluation",
+      "expected": {
+        "material": "unclear"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-ambiguous",
+      "state": "El panel podría ser de vidrio o de acero.",
+      "translation": "The panel could be glass or steel.",
+      "language": "es",
+      "split": "evaluation",
+      "expected": {
+        "material": "unclear"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "en-concrete",
+      "state": "concrete",
+      "translation": "concrete",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "material": "concrete"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "it-concrete",
+      "state": "calcestruzzo",
+      "translation": "concrete",
+      "language": "it",
+      "split": "evaluation",
+      "expected": {
+        "material": "concrete"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-concrete",
+      "state": "hormigón",
+      "translation": "concrete",
+      "language": "es",
+      "split": "evaluation",
+      "expected": {
+        "material": "concrete"
+      },
+      "translation_provenance": "Fixed, manually authored English equivalent; no live translator."
+    },
+    {
+      "id": "es-normalized",
+      "state": "  HORMIGÓN  ",
+      "translation": "concrete",
+      "language": "es",
+      "split": "evaluation",
+      "expected": {
+        "material": "concrete"
+      },
+      "translation_provenance": "Fixed English equivalent; null deliberately tests a missing translation."
+    },
+    {
+      "id": "it-alias",
+      "state": "legnno",
+      "translation": "wood",
+      "language": "it",
+      "split": "evaluation",
+      "expected": {
+        "material": "timber"
+      },
+      "translation_provenance": "Fixed English equivalent; null deliberately tests a missing translation."
+    },
+    {
+      "id": "es-mixed",
+      "state": "El panel is made of glass.",
+      "translation": "The panel is made of glass.",
+      "language": "es",
+      "split": "evaluation",
+      "expected": {
+        "material": "glass"
+      },
+      "translation_provenance": "Fixed English equivalent; null deliberately tests a missing translation."
+    },
+    {
+      "id": "it-missing",
+      "state": "materiale sconosciuto",
+      "translation": null,
+      "language": "it",
+      "split": "evaluation",
+      "expected": {
+        "material": "unclear"
+      },
+      "translation_provenance": "Fixed English equivalent; null deliberately tests a missing translation."
+    }
+  ]
+}

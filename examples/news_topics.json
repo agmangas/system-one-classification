@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "id": "news_topics",
+  "title": "News-topic classification",
+  "lesson": "Change only option descriptions; classify the main subject, not an isolated keyword.",
+  "variants": {
+    "baseline": {
+      "preparation": "original",
+      "questions": {
+        "topic": {
+          "type": "choice",
+          "instructions": "What is the main topic of this news sentence?",
+          "criteria": {
+            "sports": "sports",
+            "technology": "technology",
+            "business": "business",
+            "arts": "arts"
+          }
+        }
+      }
+    },
+    "prepared": {
+      "preparation": "original",
+      "questions": {
+        "topic": {
+          "type": "choice",
+          "instructions": "What is the main topic of this news sentence?",
+          "criteria": {
+            "sports": "Athletic teams, players, matches, competitions and sporting results.",
+            "technology": "Computer hardware, software, digital products and technical inventions.",
+            "business": "Company finances, trade, acquisitions, profits and commercial markets.",
+            "arts": "Painting, music, theatre, literature, film and artistic performances."
+          }
+        }
+      }
+    }
+  },
+  "comparisons": [
+    [
+      "baseline",
+      "prepared"
+    ]
+  ],
+  "cases": [
+    {
+      "id": "case-01",
+      "state": "The club signed a new goalkeeper before the season began.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "sports"
+      }
+    },
+    {
+      "id": "case-02",
+      "state": "The sprinter broke the national record in the final.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "sports"
+      }
+    },
+    {
+      "id": "case-03",
+      "state": "The new operating system adds encrypted file backups.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "technology"
+      }
+    },
+    {
+      "id": "case-04",
+      "state": "Engineers unveiled a processor that uses less electricity.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "technology"
+      }
+    },
+    {
+      "id": "case-05",
+      "state": "The retailer reported a fall in quarterly profits.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "business"
+      }
+    },
+    {
+      "id": "case-06",
+      "state": "Two shipping companies agreed to merge their operations.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "business"
+      }
+    },
+    {
+      "id": "case-07",
+      "state": "The museum opened an exhibition of watercolour paintings.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "arts"
+      }
+    },
+    {
+      "id": "case-08",
+      "state": "The orchestra performed a newly commissioned symphony.",
+      "language": "en",
+      "split": "development",
+      "expected": {
+        "topic": "arts"
+      }
+    },
+    {
+      "id": "case-09",
+      "state": "A late penalty secured the team a place in the final.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "sports"
+      }
+    },
+    {
+      "id": "case-10",
+      "state": "The tennis champion returned after a shoulder injury.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "sports"
+      }
+    },
+    {
+      "id": "case-11",
+      "state": "Researchers demonstrated a new method of storing computer data.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "technology"
+      }
+    },
+    {
+      "id": "case-12",
+      "state": "The browser update fixes a security flaw in its rendering engine.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "technology"
+      }
+    },
+    {
+      "id": "case-13",
+      "state": "The football club reported record annual revenue, despite winning no trophies.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "business"
+      }
+    },
+    {
+      "id": "case-14",
+      "state": "A software company acquired its largest rival for two billion dollars.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "business"
+      }
+    },
+    {
+      "id": "case-15",
+      "state": "The play about a famous scientist won the theatre festival prize.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "arts"
+      }
+    },
+    {
+      "id": "case-16",
+      "state": "A documentary follows the life of a retired footballer; reviewers praised its cinematography.",
+      "language": "en",
+      "split": "evaluation",
+      "expected": {
+        "topic": "arts"
+      }
+    }
+  ]
+}
