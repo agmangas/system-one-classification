@@ -48,7 +48,7 @@ Results are grouped by example, variant, source language, preparation method, an
 
 Missing translations and glossary matches are skipped. Check preparation coverage alongside accuracy, since skipped cases are excluded from accuracy. Direct non-English inputs are marked `unsupported_language_input: true`.
 
-The new English examples each have eight development cases for editing queries and eight evaluation cases for measuring them. Keep the evaluation cases separate when tuning. Materials keeps its 37 original cases; multilingual has its own translation and glossary cases.
+**Development** cases are for editing queries; **evaluation** cases are for checking their results. The new English examples have eight of each. Materials has 37 evaluation cases, including the older cases previously labelled `legacy`. Multilingual has its own translation and glossary cases.
 
 Wrong predictions and missing preparations appear in the report without failing the run. Invalid fixtures, malformed responses, and unexpected HTTP errors cause a nonzero exit status.
 

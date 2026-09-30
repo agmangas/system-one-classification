@@ -95,7 +95,7 @@ def validate_suite(suite: dict) -> None:
         require(
             isinstance(case.get("language"), str) and bool(case["language"]), "missing language"
         )
-        require(case.get("split") in {"development", "evaluation", "legacy"}, "invalid split")
+        require(case.get("split") in {"development", "evaluation"}, "invalid split")
         require(
             case.get("translation") is None or isinstance(case["translation"], (str, dict)),
             "translation must be text or an object",

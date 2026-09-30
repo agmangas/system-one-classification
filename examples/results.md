@@ -9,7 +9,7 @@ Prepared queries improved news and evidence classification, but worsened materia
 | Refund detection | 8 | 8/8 correct | 8/8 correct |
 | Evidence and claims | 8 | 5/8 correct | 6/8 correct |
 | Message specificity | 8 | MAE 1.137 | MAE 1.354 |
-| Materials (legacy) | 31 | 24/31 correct | 9/31 correct |
+| Materials | 31 | 24/31 correct | 9/31 correct |
 
 Lower mean absolute error (MAE) is better for Score. All other rows count correct classifications. Each example uses its eight evaluation cases, except materials, which uses its 31 original English cases. These small sets give examples of model behaviour, not general accuracy estimates.
 

@@ -57,7 +57,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: concreet",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-concrete-2",
@@ -68,7 +68,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: concret",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-concrete-3",
@@ -79,7 +79,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: conncrete",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-concrete-4",
@@ -90,7 +90,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: concreye",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-steel-1",
@@ -101,7 +101,7 @@
         "material": "steel"
       },
       "state": "Misspelled material name: steeel",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-steel-2",
@@ -112,7 +112,7 @@
         "material": "steel"
       },
       "state": "Misspelled material name: stel",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-steel-3",
@@ -123,7 +123,7 @@
         "material": "steel"
       },
       "state": "Misspelled material name: sttel",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-steel-4",
@@ -134,7 +134,7 @@
         "material": "steel"
       },
       "state": "Misspelled material name: setel",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-timber-1",
@@ -145,7 +145,7 @@
         "material": "timber"
       },
       "state": "Misspelled material name: timbr",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-timber-2",
@@ -156,7 +156,7 @@
         "material": "timber"
       },
       "state": "Misspelled material name: timmber",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-timber-3",
@@ -167,7 +167,7 @@
         "material": "timber"
       },
       "state": "Misspelled material name: tibmer",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-timber-4",
@@ -178,7 +178,7 @@
         "material": "timber"
       },
       "state": "Misspelled material name: timberr",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-brick-1",
@@ -189,7 +189,7 @@
         "material": "brick"
       },
       "state": "Misspelled material name: brik",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-brick-2",
@@ -200,7 +200,7 @@
         "material": "brick"
       },
       "state": "Misspelled material name: brrick",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-brick-3",
@@ -211,7 +211,7 @@
         "material": "brick"
       },
       "state": "Misspelled material name: brcik",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-brick-4",
@@ -222,7 +222,7 @@
         "material": "brick"
       },
       "state": "Misspelled material name: bricj",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-glass-1",
@@ -233,7 +233,7 @@
         "material": "glass"
       },
       "state": "Misspelled material name: glas",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-glass-2",
@@ -244,7 +244,7 @@
         "material": "glass"
       },
       "state": "Misspelled material name: gllass",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-glass-3",
@@ -255,7 +255,7 @@
         "material": "glass"
       },
       "state": "Misspelled material name: galss",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-glass-4",
@@ -266,7 +266,7 @@
         "material": "glass"
       },
       "state": "Misspelled material name: glsss",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-stone-1",
@@ -277,7 +277,7 @@
         "material": "stone"
       },
       "state": "Misspelled material name: stonn",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-stone-2",
@@ -288,7 +288,7 @@
         "material": "stone"
       },
       "state": "Misspelled material name: ston",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-stone-3",
@@ -299,7 +299,7 @@
         "material": "stone"
       },
       "state": "Misspelled material name: sttone",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-stone-4",
@@ -310,7 +310,7 @@
         "material": "stone"
       },
       "state": "Misspelled material name: stnoe",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-1",
@@ -321,7 +321,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: alumnium",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-2",
@@ -332,7 +332,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: plasstic",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-3",
@@ -343,7 +343,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: copperr",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-4",
@@ -354,7 +354,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: asphallt",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-5",
@@ -365,7 +365,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: gypsumm",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-other-6",
@@ -376,7 +376,7 @@
         "material": "unknown"
       },
       "state": "Misspelled material name: rubbr",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "en-cement",
@@ -387,7 +387,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: cemant",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-concrete",
@@ -398,7 +398,7 @@
         "material": "concrete"
       },
       "state": "Misspelled material name: calcestruzo",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-steel",
@@ -409,7 +409,7 @@
         "material": "steel"
       },
       "state": "Misspelled material name: aciaio",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-timber",
@@ -420,7 +420,7 @@
         "material": "timber"
       },
       "state": "Misspelled material name: legnno",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-brick",
@@ -431,7 +431,7 @@
         "material": "brick"
       },
       "state": "Misspelled material name: matone",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-glass",
@@ -442,7 +442,7 @@
         "material": "glass"
       },
       "state": "Misspelled material name: vettro",
-      "split": "legacy"
+      "split": "evaluation"
     },
     {
       "id": "it-stone",
@@ -453,7 +453,7 @@
         "material": "stone"
       },
       "state": "Misspelled material name: pietrra",
-      "split": "legacy"
+      "split": "evaluation"
     }
   ]
 }
