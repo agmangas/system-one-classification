@@ -1,0 +1,81 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: Install pinned local dependencies
+    cmds:
+      - uv sync --locked --all-groups
+
+  weights:
+    desc: Download and verify pinned model weights for local serving
+    cmds:
+      - uv run --locked python scripts/download_weights.py
+
+  serve:
+    desc: Run the HTTP API with local model weights
+    env:
+      VON_DEVICE: '{{.VON_DEVICE | default "cpu"}}'
+      VON_NOUL_DECISION: raw
+      VON_CHAINS_DIR: off
+      VON_ON_OVERFLOW: refuse
+      VON_MAX_STATE_TOKENS: '512'
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+    cmds:
+      - uv run --locked uvicorn system_one_service.app:app --host 0.0.0.0 --port 8000
+
+  lint:
+    desc: Lint source and tests
+    cmds:
+      - uv run --locked ruff check src scripts tests
+      - uv run --locked ruff format --check src scripts tests
+
+  fmt:
+    desc: Format and sort Python code
+    cmds:
+      - uv run --locked ruff format src scripts tests
+      - uv run --locked ruff check --fix src scripts tests
+
+  test:
+    desc: Run API tests without model weights
+    cmds:
+      - uv run --locked pytest -q
+
+  check:
+    desc: Run local checks
+    deps: [lint, test]
+
+  materials:
+    desc: Evaluate English and Italian material fixtures over HTTP
+    cmds:
+      - python3 scripts/validate_materials.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/materials.json
+
+  benchmark:
+    desc: Measure short-request HTTP latency
+    cmds:
+      - python3 scripts/benchmark.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --max-p95 1.0
+
+  sdk-smoke:
+    desc: Check Von HTTP SDK compatibility against a running service
+    cmds:
+      - uv run --locked python scripts/sdk_smoke.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}}
+
+  image-build:
+    desc: Build the bundled CPU image for the local architecture
+    cmds:
+      - docker build --tag ${IMAGE:-system-one-classification:local} .
+
+  image-smoke:
+    desc: Test the built image with four CPUs and eight GiB of memory
+    cmds:
+      - sh scripts/image_smoke.sh ${IMAGE:-system-one-classification:local}
+
+  image-up:
+    desc: Start the built image on localhost port 18080 for manual API checks
+    cmds:
+      - docker run --detach --rm --name system-one-dev --cpus=4 --memory=8g -p 127.0.0.1:18080:8000 ${IMAGE:-system-one-classification:local}
+
+  image-down:
+    desc: Stop the local API container
+    cmds:
+      - docker stop system-one-dev

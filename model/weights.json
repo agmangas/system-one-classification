@@ -1,0 +1,12 @@
+{
+  "repository": "wfzyx/von",
+  "revision": "411c44401cccddd792f341edfe033ea834557d13",
+  "files": {
+    "config.json": "091b9a53c47e1cbc0b10b521a2d2f21dedf863851c07122cfa3d3e497e5e82ec",
+    "marker_calibration.json": "9b32949dcd0cfd122db509c9bd5be67f0cfe35696153aa93d667caf0aae147c9",
+    "model.safetensors": "af57d5d2ab15715a753a1eb4add4271d1aecce7e76f3365f629c082df329297a",
+    "option_marker.pt": "3faf27f88d30aaf9aa37860d4cdef99f1d05450cf40364f6236ac892d4d139ed",
+    "tokenizer.json": "bb637767e8dfb8044597df6c58243bff2e592ae9e3b310c0bbdb8591f6ac543d",
+    "tokenizer_config.json": "4d2a485d5fd1ee514db180744fc00807c11da34012ac3666744c0377f6c23731"
+  }
+}
