@@ -1,50 +1,28 @@
 # System One CPU classification
 
-This service runs pinned [Von](https://github.com/wfzyx/von) weights on a CPU and answers choice, yes/no, and score questions over HTTP. The Docker image includes the weights, so startup needs no model download.
+Run pinned [Von](https://github.com/wfzyx/von) weights on a CPU and answer classification, yes/no and scoring questions over HTTP. The Docker image bundles the weights, so startup needs no model download.
 
-## Run the image
+Start with the [news-topic walkthrough](examples/news_topics.md), or explore all [seven self-contained examples](examples/README.md): materials, news topics, customer requests, refund detection, evidence checks, message scoring and multilingual preparation. Each includes a complete request and a reproducible query comparison.
+
+## Run the service
 
 ```sh
 docker run --rm -p 8000:8000 --cpus=4 --memory=8g \
   ghcr.io/agmangas/system-one-classification:latest
 ```
 
-The image works on `linux/amd64` and `linux/arm64`. 
+The image supports `linux/amd64` and `linux/arm64`. For reproducible evaluation, replace `latest` with a recorded image digest; see the [reproduction instructions](examples/README.md#reproduce-a-run).
 
-- `GET /ready`: Ready when the model loads.
-- `GET /health`: Checks app up.
-- `GET /v1/models`: Lists model, backend, versions.
-- `/docs`: OpenAPI.
-- Use `SYSTEM_ONE_API_KEY` to require auth.
+- `GET /ready`: ready after the model loads.
+- `GET /health`: application liveness.
+- `GET /v1/models`: model and backend version metadata.
+- `/docs`: OpenAPI documentation.
+- Set `SYSTEM_ONE_API_KEY` to require bearer authentication.
 
-Send `model`, `state`, and `questions` to `POST /v1/systemone`. The response gives `answers` and `usage`. The model ID is `system-one-cpu`. 
-
-- Each choice/score question takes one model pass.
-- Yes/no (`noul`) with criteria: one pass. Without criteria: two passes.
-- Optional chains are off.
-
-This example uses six material labels and an `unknown` rejection result:
+Send `model`, `state` and `questions` to `POST /v1/systemone`. The model ID is `system-one-cpu`; responses contain `answers` and `usage`.
 
 ```sh
-curl -sS http://localhost:8000/v1/systemone \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "system-one-cpu",
-    "state": "Misspelled material name: alumnium",
-    "questions": {
-      "material": {
-        "type": "choice",
-        "instructions": "Classify the material named by the input.",
-        "criteria": {
-          "concrete": "concrete",
-          "steel": "steel",
-          "timber": "timber",
-          "brick": "brick",
-          "glass": "glass",
-          "stone": "stone",
-          "unknown": "Aluminum, plastic, copper, or other unlisted materials"
-        }
-      }
-    }
-  }'
+python3 scripts/run_examples.py --example news_topics --case case-01 --variant prepared
 ```
+
+Use `--preview` to inspect the exact request without a running model. See the [query preparation guide](examples/query-guide.md) for descriptive options, explicit yes/no criteria, score interpretation and English-only input preparation.
