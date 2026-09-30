@@ -32,8 +32,7 @@ COPY examples ./examples
 COPY LICENSE THIRD_PARTY_NOTICES.md ./
 COPY licenses ./licenses
 
-RUN useradd --create-home --uid 10001 app \
-    && chown -R app:app /app /home/app
+RUN useradd --create-home --uid 10001 app
 
 ENV HOME=/home/app \
     HF_HUB_OFFLINE=1 \
