@@ -60,6 +60,11 @@ tasks:
     cmds:
       - python3 scripts/run_examples.py --example {{.EXAMPLE | default "all"}} --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/examples.json {{.CLI_ARGS}}
 
+  examples-report:
+    desc: Render a saved examples JSON report as offline HTML without model calls
+    cmds:
+      - python3 scripts/render_examples_report.py {{.REPORT | default "reports/examples.json" | shellQuote}} {{.CLI_ARGS}}
+
   benchmark:
     desc: Measure warm HTTP latency for a selected example
     cmds:

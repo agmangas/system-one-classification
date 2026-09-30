@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System One · Example results</title>
+  <style>$stylesheet</style>
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <p class="eyebrow">System One</p>
+    <h1>Example results</h1>
+    <p class="intro">See the input, the expected answer, and what the model actually answered.</p>
+    <p><strong>Original query</strong> uses the starting wording. <strong>Reworded query</strong> changes the question or category descriptions. Open “Query details” to see the difference.</p>
+    <p class="muted">$input_count inputs · $answered_count answers · $skipped_count skipped · $error_count failed</p>
+    <nav aria-label="Report sections"><a href="#overview">Overview</a><a href="#case-list">Individual results</a></nav>
+  </header>
+  $errors
+
+  <form id="filters" class="filters" aria-label="Filter results">
+    <label>Example<select id="suite"><option value="">All examples</option>$suite_options</select></label>
+    <label>Show<select id="focus">
+      <option value="">All results</option>
+      <option value="different">Answers differing from expected</option>
+      <option value="issue">Skipped or failed</option>
+    </select></label>
+    <label class="search">Find an input<input id="search" type="search" placeholder="Search input text or case ID"></label>
+    <button type="reset">Reset</button>
+  </form>
+  <noscript><p>Filters need JavaScript. All results are available below.</p></noscript>
+
+  <section id="overview" aria-labelledby="overview-title">
+    <h2 id="overview-title">Overview</h2>
+    <p class="muted">Counts cover all example inputs in this run. Skipped and failed requests are excluded from correct-answer totals. Search and “Show” filter the individual results below.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Example</th><th>Query</th><th>Result</th></tr></thead>
+      $summary
+    </table></div>
+  </section>
+
+  <section id="case-list" aria-labelledby="cases-title">
+    <div class="section-heading"><h2 id="cases-title">Individual results</h2><p id="case-count" role="status" aria-live="polite">$input_count inputs</p></div>
+    <p class="muted">Expected answers were supplied with the examples and were never sent to the model. Numeric scores can contain decimals; a smaller distance from the expected score is better.</p>
+    $cases
+    <p id="empty-cases" class="empty" hidden>No inputs match. Try another selection or reset the filters.</p>
+  </section>
+
+  <details class="run-metadata"><summary>Technical run details</summary>$run_metadata</details>
+  <footer>This report works offline.</footer>
+</main>
+<script>$script</script>
+</body>
+</html>

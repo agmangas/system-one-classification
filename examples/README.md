@@ -37,9 +37,27 @@ Use `task examples EXAMPLE=materials` to run the materials example through the s
 
 ## Read the report
 
+`task examples` writes `reports/examples.html` alongside `reports/examples.json`.
+Open the HTML file in your browser: it works offline and needs no web server.
+Any runner command with `--output` creates both files.
+
+The report shows an overview, then each input, expected answer, and actual answers
+side by side. Open **Query details** to compare wording and probabilities. Filter
+by example, answers differing from expected, or skipped/failed requests.
+
+To turn an existing JSON report into HTML without calling the model:
+
+```sh
+task examples-report
+task examples-report REPORT=reports/examples-amd64.json
+```
+
+Older schema-version-1 reports also work. The overview counts all inputs in the
+run; search and the **Show** filter apply to individual results.
+
 The terminal prints summaries; `--verbose` prints every outcome. The JSON report includes inputs, expected answers, requests, responses, timings, and errors. Expected answers stay local and are never sent to Von.
 
-Results are grouped by example, variant, source language, preparation method, and development or evaluation set:
+The JSON and terminal retain detailed groups by query, language, and dataset:
 
 - Choice reports accuracy.
 - Noul reports accuracy using a probability threshold of 0.5.

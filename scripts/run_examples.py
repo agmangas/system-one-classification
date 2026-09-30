@@ -21,6 +21,7 @@ from example_support import (
     summarize,
     validate_response,
 )
+from render_examples_report import write_report
 
 
 def run_case(suite: dict, case: dict, variant: str, base_url: str) -> dict:
@@ -176,6 +177,8 @@ def main(argv: list[str] | None = None) -> int:
         selections = selected_cases(suites, args.case, args.variant)
         if args.preview:
             return print_preview(selections)
+        if args.output and args.output.with_suffix(".html") == args.output:
+            raise ValueError("--output must differ from its sibling .html report")
         report = collect_metadata(suites, args.base_url, args.runtime_metadata)
         errors = []
         try:
@@ -192,9 +195,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+            write_report(report, args.output.with_suffix(".html"))
         print_summary(report)
         if args.output:
             print(f"\nFull report: {args.output}")
+            print(f"HTML report: {args.output.with_suffix('.html')}")
         return int(bool(errors) or any(row["status"] == "error" for row in rows))
     except (ValueError, OSError) as exc:
         print(f"examples: {exc}", file=sys.stderr)
