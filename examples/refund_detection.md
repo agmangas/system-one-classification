@@ -31,7 +31,7 @@ Read `answers.refund_requested.noul` for the probability of an explicit refund r
 
 ## Compare the criteria
 
-The baseline omits criteria. The prepared version describes both `true` and `false`, as shown above.
+The original query omits criteria. The reworded query describes both `true` and `false`, as shown above.
 
 ```sh
 # Run the case above

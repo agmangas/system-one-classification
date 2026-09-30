@@ -33,9 +33,9 @@ The expected level is `3` because the message includes steps to reproduce the cr
 
 ## Compare the level descriptions
 
-The baseline uses short level names. The prepared version describes what each level requires. The report measures mean absolute error from the expected level; lower is better.
+The original query uses short level names. The reworded query describes what each level requires. The report measures the average distance from the expected level; lower is better.
 
-The prepared version had a larger error in the [recorded run](results.md). The request above returned 0.68 against an expected level of 3.
+The reworded query had a larger error in the [recorded run](results.md). The request above returned 0.68 against an expected level of 3.
 
 ```sh
 # Run the case above

@@ -33,7 +33,7 @@ The expected answer is `sports`. A sentence about a football club’s annual rev
 
 ## Compare the descriptions
 
-The baseline uses topic names. The prepared version adds the definitions shown above. These four topics cover the example inputs; a broader news collection may need more categories.
+The original query uses topic names. The reworded query adds the definitions shown above. These four topics cover the example inputs; a broader news collection may need more categories.
 
 ```sh
 # Run the case above

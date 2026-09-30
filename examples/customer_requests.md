@@ -33,7 +33,7 @@ Read `answers.category.choice` for the selected label. The expected answer is `b
 
 ## Compare the instructions
 
-The baseline asks “Classify this.” The prepared version asks “Classify the main purpose of the customer message.” Both use the same category descriptions.
+The original query asks “Classify this.” The reworded query asks “Classify the main purpose of the customer message.” Both use the same category descriptions.
 
 ```sh
 # Run the case above

@@ -35,7 +35,7 @@ A record of a Monday dispatch leaves a claim of Tuesday arrival unresolved. Its 
 
 ## Compare the descriptions
 
-Both variants use the same three labels. The prepared version adds definitions for each one.
+Both queries use the same three labels. The reworded query adds definitions for each one.
 
 ```sh
 # Run the case above

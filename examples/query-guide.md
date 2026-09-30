@@ -51,7 +51,7 @@ The [multilingual example](multilingual.md) uses fixed Italian and Spanish trans
 
 ## Compare results before adopting a query
 
-Run baseline and prepared queries on the same inputs. Use separate cases for editing a query and evaluating it. The [recorded results](results.md) include improvements and regressions; longer descriptions did not always help.
+Run the original and reworded queries on the same inputs. Use separate cases for editing a query and checking it. The [recorded results](results.md) show where answers improved or worsened; longer descriptions did not always help.
 
 For Choice and Score, read `probabilities` for the distribution. The separate `confidence` field adjusts the highest probability for the number of options. Noul uses raw probabilities in this service. See the [backend calculation][backend].
 

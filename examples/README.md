@@ -12,7 +12,7 @@ Start with [news topics](news_topics.md) for a small text classifier. Each walkt
 | [Message specificity](message_specificity.md) | Score | Define ordered levels |
 | [Multilingual preparation](multilingual.md) | Choice | Translate input for an English-only model |
 
-Each example compares a baseline with prepared queries. Preparation sometimes helps and sometimes makes results worse; see the [recorded results](results.md). The [query guide](query-guide.md) explains the choices behind the examples.
+Each example compares an **original query** with a **reworded query** that changes the question or answer descriptions. Rewording sometimes helps and sometimes makes results worse; see the [recorded results](results.md). The JSON and CLI call these `baseline` and `prepared`, respectively. The [query guide](query-guide.md) explains the changes.
 
 ## Run an example
 

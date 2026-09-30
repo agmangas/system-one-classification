@@ -34,9 +34,9 @@ Read `answers.material.choice` for the selected label. The expected answer for `
 
 ## Compare the descriptions
 
-The baseline uses short labels. The prepared version describes each material and the fallback. This catalogue groups cement under concrete as a business rule.
+The original query uses short labels. The reworded query describes each material and the fallback. This catalogue groups cement under concrete as a business rule.
 
-All 37 materials cases belong to the evaluation set, including six Italian inputs that probe Von’s English-only limitation. The prepared descriptions reduced English accuracy from 24/31 to 9/31 in the [recorded run](results.md).
+All 37 materials cases belong to the evaluation set, including six Italian inputs that probe Von’s English-only limitation. The reworded descriptions reduced English accuracy from 24/31 to 9/31 in the [recorded run](results.md).
 
 ```sh
 # Run the case above

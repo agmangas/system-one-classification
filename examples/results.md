@@ -1,8 +1,8 @@
 # Observed example results
 
-Prepared queries improved news and evidence classification, but worsened materials classification and message specificity in this run.
+Reworded queries improved news and evidence classification, but worsened materials classification and message specificity in this run.
 
-| English example | Cases | Baseline | Prepared |
+| English example | Cases | Original query | Reworded query |
 | --- | ---: | ---: | ---: |
 | News topics | 8 | 5/8 correct | 8/8 correct |
 | Customer requests | 8 | 8/8 correct | 8/8 correct |
