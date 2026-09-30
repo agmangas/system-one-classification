@@ -33,7 +33,7 @@ Use `--base-url` for another server and `SYSTEM_ONE_API_KEY` for authentication.
 
 Add `--preview` to inspect requests without HTTP calls. A single prepared request prints as JSON you can pipe to curl; multiple selections print a list. A single case with missing preparation exits with an error.
 
-`task materials` and `scripts/validate_materials.py` also use this runner and report format. The old `--min-english-accuracy` option has been removed.
+Use `task examples EXAMPLE=materials` to run the materials example through the shared task.
 
 ## Read the report
 

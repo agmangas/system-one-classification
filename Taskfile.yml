@@ -45,11 +45,6 @@ tasks:
     desc: Run local checks
     deps: [lint, test]
 
-  materials:
-    desc: Evaluate the materials example (compatibility command)
-    cmds:
-      - python3 scripts/validate_materials.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}} --output reports/materials.json
-
   examples:
     desc: Run all examples, or select with EXAMPLE and CLI arguments after --
     cmds:
