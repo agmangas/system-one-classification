@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: CI and Release
 
 on:
   push:
@@ -30,6 +30,7 @@ jobs:
       - run: task check
 
   build-and-push:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: check
     strategy:
       fail-fast: false
@@ -96,14 +97,12 @@ jobs:
           IMAGE: system-one-classification:ci
         run: task image-smoke
       - name: Log into GHCR
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push validated architecture
-        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -116,7 +115,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=system-one${{ matrix.variant }}-${{ matrix.arch }}
 
   publish-manifest:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: build-and-push
     runs-on: ubuntu-24.04
     permissions:
@@ -166,7 +165,6 @@ jobs:
           docker pull "$IMAGE:$VERSION"
           docker pull "$IMAGE:$VERSION-slm"
       - name: Create GitHub release
-        if: startsWith(github.ref, 'refs/tags/v')
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag
