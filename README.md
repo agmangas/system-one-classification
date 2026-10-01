@@ -26,7 +26,7 @@ docker run --rm -p 8000:8000 --cpuset-cpus=0-3 --memory=8g \
   ghcr.io/agmangas/system-one-classification:latest
 ```
 
-The image supports `linux/amd64` and `linux/arm64`. For reproducible evaluation, replace `latest` with a recorded image digest; see the [reproduction instructions](examples/README.md#reproduce-a-run).
+The image supports `linux/amd64` and `linux/arm64`. `latest` is the newest release; to keep the same models across releases, replace it with a [version](#versions) such as `0.1`.
 
 - `GET /ready`: ready after the model loads.
 - `GET /health`: application liveness.
@@ -52,6 +52,16 @@ In SLM mode, questions are mapped to label tokens (`A`, `B`, etc.) and the model
 
 > [!TIP]
 > To run SLM locally, install llama.cpp, then run `SYSTEM_ONE_BACKEND=slm task weights` and `task serve SYSTEM_ONE_BACKEND=slm`. Build the SLM Docker image with: `task image-build BACKEND=slm`.
+
+## Versions
+
+Each release publishes `<version>` and `<version>-slm` images and moves the `<major>.<minor>` and `latest` tags (and their `-slm` variants) to it. Patch releases keep the same models and API.
+
+| Release | Von             | Qwen3.5-4B         | Bonsai-4B        |
+| ------- | --------------- | ------------------ | ---------------- |
+| 0.1.0   | 1.2 (`411c444`) | Q4_K_M (`e87f176`) | Q1_0 (`78f2c2b`) |
+
+The hashes are the Hugging Face weights revisions pinned in `model/`.
 
 ## Scale up
 

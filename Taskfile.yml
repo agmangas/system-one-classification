@@ -60,6 +60,28 @@ tasks:
     desc: Run local checks
     deps: [lint, test]
 
+  release:
+    desc: Bump the version with BUMP=patch, minor or major, check the release, then commit and tag it
+    requires:
+      vars:
+        - name: BUMP
+          enum: [patch, minor, major]
+    vars:
+      VERSION:
+        sh: uv version --bump {{.BUMP}} --dry-run --short
+    preconditions:
+      - sh: test "$(git branch --show-current)" = main
+        msg: Release from main
+      - sh: git diff --quiet HEAD -- . ':!README.md'
+        msg: Commit or stash changes other than the README versions table
+    cmds:
+      - python3 scripts/check_release.py {{.VERSION}}
+      - task: check
+      - uv version {{.VERSION}}
+      - 'git commit --quiet --message "chore: release v{{.VERSION}}" README.md pyproject.toml uv.lock'
+      - git tag --annotate --message "v{{.VERSION}}" v{{.VERSION}}
+      - echo "Tagged v{{.VERSION}}. Publish it with git push --follow-tags"
+
   examples:
     desc: Run all examples, or select with EXAMPLE and CLI arguments after --
     cmds:
