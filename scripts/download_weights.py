@@ -1,4 +1,4 @@
-"""Fetch and verify the exact public Von checkpoint used by the image."""
+"""Fetch and verify the pinned public weights for the backend in SYSTEM_ONE_BACKEND."""
 
 import hashlib
 import json
@@ -8,8 +8,11 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = json.loads((ROOT / "model/weights.json").read_text())
-DESTINATION = Path(os.environ.get("SYSTEM_ONE_WEIGHTS_DIR", ROOT / "checkpoints/von-1.2"))
+MANIFESTS, DEFAULT_DESTINATION = {
+    "von": ([ROOT / "model/weights.json"], "checkpoints/von-1.2"),
+    "slm": (sorted((ROOT / "model/slm").glob("*.json")), "checkpoints/slm"),
+}[os.environ.get("SYSTEM_ONE_BACKEND", "von")]
+DESTINATION = Path(os.environ.get("SYSTEM_ONE_WEIGHTS_DIR", ROOT / DEFAULT_DESTINATION))
 
 
 def sha256(path: Path) -> str:
@@ -22,19 +25,20 @@ def sha256(path: Path) -> str:
 
 def main() -> None:
     DESTINATION.mkdir(parents=True, exist_ok=True)
-    for filename, expected in MANIFEST["files"].items():
-        local = Path(
-            hf_hub_download(
-                repo_id=MANIFEST["repository"],
-                revision=MANIFEST["revision"],
-                filename=filename,
-                local_dir=DESTINATION,
+    for path in MANIFESTS:
+        manifest = json.loads(path.read_text())
+        for filename, expected in manifest["files"].items():
+            local = Path(
+                hf_hub_download(
+                    repo_id=manifest["repository"],
+                    revision=manifest["revision"],
+                    filename=filename,
+                    local_dir=DESTINATION,
+                )
             )
-        )
-        if sha256(local) != expected:
-            raise RuntimeError(f"checksum mismatch for {filename}")
-        print(f"verified {filename}")
-    (DESTINATION / "REVISION").write_text(MANIFEST["revision"] + "\n")
+            if sha256(local) != expected:
+                raise RuntimeError(f"checksum mismatch for {filename}")
+            print(f"verified {filename}")
 
 
 if __name__ == "__main__":

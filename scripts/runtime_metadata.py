@@ -16,6 +16,10 @@ def main() -> None:
     image = inspect("image", container["Image"])
     env = dict(item.split("=", 1) for item in container["Config"]["Env"] if "=" in item)
     allowed = (
+        "SYSTEM_ONE_BACKEND",
+        "SYSTEM_ONE_SLM_MODEL",
+        "SYSTEM_ONE_SLM_CTX_SIZE",
+        "SYSTEM_ONE_SLM_THREADS",
         "VON_DEVICE",
         "VON_NOUL_DECISION",
         "VON_CHAINS_DIR",

@@ -7,13 +7,18 @@ tasks:
       - uv sync --locked --all-groups
 
   weights:
-    desc: Download and verify pinned model weights for local serving
+    desc: Download and verify the pinned weights for SYSTEM_ONE_BACKEND (von or slm)
+    env:
+      SYSTEM_ONE_BACKEND: '{{.SYSTEM_ONE_BACKEND | default "von"}}'
     cmds:
       - uv run --locked python scripts/download_weights.py
 
   serve:
     desc: Run the HTTP API with local model weights
     env:
+      # `slm` runs a small language model through llama.cpp and needs `llama-server` on PATH
+      # (for example from `brew install llama.cpp`); `von` runs the bundled Von model.
+      SYSTEM_ONE_BACKEND: '{{.SYSTEM_ONE_BACKEND | default "von"}}'
       # Default to PyTorch on the CPU because OpenVINO is only installed on Linux;
       # on Linux, run `task serve VON_DEVICE=openvino:cpu` for faster inference.
       VON_DEVICE: '{{.VON_DEVICE | default "cpu"}}'
@@ -76,9 +81,9 @@ tasks:
       - uv run --locked python scripts/sdk_smoke.py --base-url {{.BASE_URL | default "http://127.0.0.1:8000"}}
 
   image-build:
-    desc: Build the bundled CPU image for the local architecture
+    desc: Build the CPU image for the local architecture; set BACKEND=slm for the SLM image
     cmds:
-      - docker build --tag ${IMAGE:-system-one-classification:local} .
+      - docker build --target {{.BACKEND | default "von"}} --tag ${IMAGE:-system-one-classification:local} .
 
   image-smoke:
     desc: Test the built image with four CPUs and eight GiB of memory

@@ -590,37 +590,41 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "httpx" },
     { name = "huggingface-hub" },
-    { name = "openvino", marker = "sys_platform == 'linux'" },
-    { name = "torch", version = "2.9.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
-    { name = "torch", version = "2.9.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
     { name = "uvicorn" },
-    { name = "von-sdk" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "httpx" },
     { name = "pytest" },
     { name = "ruff" },
+]
+von = [
+    { name = "openvino", marker = "sys_platform == 'linux'" },
+    { name = "torch", version = "2.9.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
+    { name = "torch", version = "2.9.1+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
+    { name = "von-sdk" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.116,<1" },
+    { name = "httpx", specifier = ">=0.28,<1" },
     { name = "huggingface-hub", specifier = ">=0.34,<2" },
-    { name = "openvino", marker = "sys_platform == 'linux'", specifier = "==2026.4.0" },
-    { name = "torch", marker = "sys_platform == 'darwin'", specifier = "==2.9.1" },
-    { name = "torch", marker = "sys_platform == 'linux'", specifier = "==2.9.1+cpu", index = "https://download.pytorch.org/whl/cpu" },
     { name = "uvicorn", specifier = ">=0.35,<1" },
-    { name = "von-sdk", git = "https://github.com/wfzyx/von.git?rev=5ea5082f67d2bfc69336ce6150f6d05393d7fd27" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "httpx", specifier = ">=0.28,<1" },
     { name = "pytest", specifier = ">=9,<10" },
     { name = "ruff", specifier = ">=0.13,<1" },
+]
+von = [
+    { name = "openvino", marker = "sys_platform == 'linux'", specifier = "==2026.4.0" },
+    { name = "torch", marker = "sys_platform == 'darwin'", specifier = "==2.9.1" },
+    { name = "torch", marker = "sys_platform == 'linux'", specifier = "==2.9.1+cpu", index = "https://download.pytorch.org/whl/cpu" },
+    { name = "von-sdk", git = "https://github.com/wfzyx/von.git?rev=5ea5082f67d2bfc69336ce6150f6d05393d7fd27" },
 ]
 
 [[package]]

@@ -1,4 +1,4 @@
-"""System One wire API backed by a pinned local Von model."""
+"""System One wire API backed by a pinned local model: Von or a small language model."""
 
 import asyncio
 import logging
@@ -9,13 +9,11 @@ from typing import Any, Literal
 
 from fastapi import FastAPI, Header, HTTPException, Response
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from von.engine import VonEngine
 
 from . import __version__
+from .slm import SlmAdapter
 
 MODEL_ALIAS = "system-one-cpu"
-BACKEND_VERSION = "von-1.3.5"
-WEIGHTS_REVISION = "411c44401cccddd792f341edfe033ea834557d13"
 logger = logging.getLogger(__name__)
 
 
@@ -97,12 +95,20 @@ class SystemOneResponse(BaseModel):
 
 
 class VonAdapter:
-    """The only module that imports Von; clients see the stable API above."""
+    """The only code that imports Von; clients see the stable API above."""
+
+    metadata = {
+        "backend": "von",
+        "backend_version": "von-1.3.5",
+        "weights_revision": "411c44401cccddd792f341edfe033ea834557d13",
+    }
 
     def __init__(self) -> None:
         self._engine: Any = None
 
     def warm(self) -> None:
+        from von.engine import VonEngine  # Imported here so the SLM image needs no torch.
+
         self._engine = VonEngine.get_instance(device=os.environ.get("VON_DEVICE", "openvino:cpu"))
         self._engine.backend._get_model()  # Load weights and compile before readiness turns green.
 
@@ -110,13 +116,21 @@ class VonAdapter:
         if self._engine is None:
             raise RuntimeError("model is not ready")
         result = self._engine.evaluate(state=state, questions=questions, model="von-1.3.0")
-        payload = result.model_dump(exclude_none=True)
-        payload["model"] = MODEL_ALIAS
-        return payload
+        return result.model_dump(exclude_none=True)
+
+
+ADAPTERS = {"von": VonAdapter, "slm": SlmAdapter}
+
+
+def default_adapter() -> Any:
+    backend = os.environ.get("SYSTEM_ONE_BACKEND", "von")
+    if backend not in ADAPTERS:
+        raise ValueError(f"SYSTEM_ONE_BACKEND must be one of {sorted(ADAPTERS)}, not {backend!r}")
+    return ADAPTERS[backend]()
 
 
 def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAPI:
-    engine = adapter or VonAdapter()
+    engine = adapter or default_adapter()
     ready = False
     semaphore = asyncio.Semaphore(int(os.environ.get("SYSTEM_ONE_MAX_CONCURRENT", "1")))
 
@@ -130,6 +144,8 @@ def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAP
             ready = True
         yield
         ready = False
+        if close := getattr(engine, "close", None):
+            await asyncio.to_thread(close)
 
     api = FastAPI(
         title="System One CPU",
@@ -163,11 +179,7 @@ def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAP
                     "id": MODEL_ALIAS,
                     "object": "model",
                     "owned_by": "system-one-classification",
-                    "metadata": {
-                        "backend": "von",
-                        "backend_version": BACKEND_VERSION,
-                        "weights_revision": WEIGHTS_REVISION,
-                    },
+                    "metadata": engine.metadata,
                 }
             ],
         }
@@ -195,7 +207,7 @@ def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAP
         try:
             async with semaphore:
                 result = await asyncio.to_thread(engine.evaluate, request.state, wire_questions)
-            return SystemOneResponse.model_validate(result)
+            return SystemOneResponse.model_validate({**result, "model": MODEL_ALIAS})
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
         except Exception as exc:

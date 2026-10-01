@@ -73,6 +73,22 @@ def print_preview(selections) -> int:
     return 0
 
 
+# The image settings each backend is expected to run with, as set in the Dockerfile.
+EXPECTED_PROFILES = {
+    "von": {
+        "VON_NOUL_DECISION": "raw",
+        "VON_CHAINS_DIR": "off",
+        "VON_MAX_STATE_TOKENS": "512",
+        "VON_ON_OVERFLOW": "refuse",
+    },
+    "slm": {
+        "SYSTEM_ONE_SLM_MODEL": "qwen3.5-4b",
+        "SYSTEM_ONE_SLM_CTX_SIZE": "1024",
+        "SYSTEM_ONE_SLM_THREADS": "4",
+    },
+}
+
+
 def collect_metadata(suites: list[dict], base_url: str, runtime_path: Path | None) -> dict:
     runtime = json.loads(runtime_path.read_text()) if runtime_path else None
     try:
@@ -97,12 +113,7 @@ def collect_metadata(suites: list[dict], base_url: str, runtime_path: Path | Non
             "architecture": platform.machine(),
         },
         "server_runtime": runtime,
-        "expected_profile": {
-            "VON_NOUL_DECISION": "raw",
-            "VON_CHAINS_DIR": "off",
-            "VON_MAX_STATE_TOKENS": "512",
-            "VON_ON_OVERFLOW": "refuse",
-        },
+        "expected_profile": None,
         "fixtures": {suite["id"]: fixture_hash(suite) for suite in suites},
         "base_url": base_url,
     }
@@ -148,6 +159,8 @@ def main(argv: list[str] | None = None) -> int:
         errors = []
         try:
             report["server_models"] = request_json(args.base_url.rstrip("/") + "/v1/models")
+            backend = report["server_models"]["data"][0]["metadata"].get("backend")
+            report["expected_profile"] = EXPECTED_PROFILES.get(backend)
         except (RuntimeError, ValueError) as exc:
             errors.append(f"model metadata: {exc}")
         rows = run_cases(selections, args.base_url, verbose=args.verbose)
