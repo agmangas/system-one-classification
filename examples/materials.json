@@ -1,20 +1,21 @@
 {
   "schema_version": 2,
   "id": "materials",
-  "title": "Materials classification",
-  "lesson": "Classify material names and short descriptions into catalogue groups, including materials outside the catalogue.",
+  "title": "Materials concept normalization",
+  "lesson": "Normalize material names and short descriptions to canonical Wikidata concepts, distinguishing unlisted materials from ambiguous inputs.",
   "questions": {
     "material": {
       "type": "choice",
-      "instructions": "Which catalogue group matches this material? This catalogue groups cement with concrete.",
+      "instructions": "Which material is named or described in the input?",
       "criteria": {
-        "concrete": "Concrete, made from cement, sand and aggregate. This group also includes cement.",
-        "steel": "Steel, an iron alloy used for beams and reinforcement bars.",
-        "timber": "Timber or wood, used for boards, flooring and furniture.",
-        "brick": "Brick, a fired clay block used to build walls.",
-        "glass": "Glass, used for window panes and bottles.",
-        "stone": "Natural stone, such as granite, marble and limestone.",
-        "unknown": "A material outside the concrete, steel, timber, brick, glass and stone groups, such as plastic, copper or aluminum."
+        "Q22657": "Concrete, a mixture of cement, sand and aggregate.",
+        "Q45190": "Cement, a binder for mortar and concrete.",
+        "Q11427": "Steel, an iron-carbon alloy.",
+        "Q287": "Wood or timber, the material from trees.",
+        "Q41177": "Granite, an igneous rock.",
+        "Q40861": "Marble, a metamorphic rock.",
+        "unknown": "A clearly identified material outside this vocabulary of concrete, cement, steel, wood, granite and marble.",
+        "ambiguous": "Insufficient information to identify one material, or more than one distinct material is named."
       }
     }
   },
@@ -23,112 +24,84 @@
       "id": "case-01",
       "state": "concrete",
       "expected": {
-        "material": "concrete"
+        "material": "Q22657"
       }
     },
     {
       "id": "case-02",
-      "state": "steel reinforcement bars",
+      "state": "cement",
       "expected": {
-        "material": "steel"
+        "material": "Q45190"
       }
     },
     {
       "id": "case-03",
-      "state": "wood",
+      "state": "timber",
       "expected": {
-        "material": "timber"
+        "material": "Q287"
       }
     },
     {
       "id": "case-04",
-      "state": "clay bricks",
+      "state": "oak floorboards",
       "expected": {
-        "material": "brick"
+        "material": "Q287"
       }
     },
     {
       "id": "case-05",
-      "state": "window glass",
+      "state": "steel reinforcement bars",
       "expected": {
-        "material": "glass"
+        "material": "Q11427"
       }
     },
     {
       "id": "case-06",
-      "state": "granite",
+      "state": "steeel",
       "expected": {
-        "material": "stone"
+        "material": "Q11427"
       }
     },
     {
       "id": "case-07",
+      "state": "granite",
+      "expected": {
+        "material": "Q41177"
+      }
+    },
+    {
+      "id": "case-08",
+      "state": "marble tiles",
+      "expected": {
+        "material": "Q40861"
+      }
+    },
+    {
+      "id": "case-09",
+      "state": "limestone slab",
+      "expected": {
+        "material": "unknown"
+      }
+    },
+    {
+      "id": "case-10",
       "state": "plastic",
       "expected": {
         "material": "unknown"
       }
     },
     {
-      "id": "case-08",
-      "state": "cement",
-      "expected": {
-        "material": "concrete"
-      }
-    },
-    {
-      "id": "case-09",
-      "state": "ready-mix concrete",
-      "expected": {
-        "material": "concrete"
-      }
-    },
-    {
-      "id": "case-10",
-      "state": "steeel",
-      "expected": {
-        "material": "steel"
-      }
-    },
-    {
       "id": "case-11",
-      "state": "oak floorboards",
+      "state": "stone tiles",
       "expected": {
-        "material": "timber"
+        "material": "ambiguous"
       }
     },
     {
       "id": "case-12",
-      "state": "brik",
+      "state": "steel or wood",
       "expected": {
-        "material": "brick"
-      }
-    },
-    {
-      "id": "case-13",
-      "state": "glass bottles",
-      "expected": {
-        "material": "glass"
-      }
-    },
-    {
-      "id": "case-14",
-      "state": "marble tiles",
-      "expected": {
-        "material": "stone"
-      }
-    },
-    {
-      "id": "case-15",
-      "state": "copper pipe",
-      "expected": {
-        "material": "unknown"
-      }
-    },
-    {
-      "id": "case-16",
-      "state": "aluminum sheet",
-      "expected": {
-        "material": "unknown"
+        "material": "ambiguous"
       }
     }
   ]

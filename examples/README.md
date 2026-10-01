@@ -6,7 +6,7 @@ Start with [news topics](news_topics.md) for a text classifier. Each example inc
 | --------------------------------------------- | ------------- | -------------------------------------------- |
 | [News topics](news_topics.md)                 | Choice        | Define categories                            |
 | [Customer requests](customer_requests.md)     | Choice        | Ask precise questions                        |
-| [Materials](materials.md)                     | Choice        | Classify materials, including unlisted ones  |
+| [Materials](materials.md)                     | Choice        | Normalize terms to canonical material concepts |
 | [Refund detection](refund_detection.md)       | Noul (yes/no) | Define yes and no                            |
 | [Evidence and claims](evidence.md)            | Choice        | Separate contradiction from missing evidence |
 | [Message specificity](message_specificity.md) | Score         | Define ordered levels                        |
