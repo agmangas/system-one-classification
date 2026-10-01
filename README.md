@@ -36,7 +36,26 @@ In SLM mode, questions are mapped to label tokens (`A`, `B`, etc.) and the model
 
 - Probabilities aren’t calibrated.
 - The whole prompt (everything including rules and options) must fit in `SYSTEM_ONE_SLM_CTX_SIZE` tokens (default 1,024), or you’ll get HTTP 422.
-- Set `SYSTEM_ONE_SLM_THREADS` to match CPU count (default 4). Note: llama.cpp ignores Docker’s `--cpus` flag.
 
 > [!TIP]
 > To run SLM locally, install llama.cpp, then run `SYSTEM_ONE_BACKEND=slm task weights` and `task serve SYSTEM_ONE_BACKEND=slm`. Build the SLM Docker image with: `task image-build BACKEND=slm`.
+
+## Scale up
+
+Each container runs one copy of the model and serves one request at a time. On a bigger machine:
+
+- Von gains little from more than 4 cores at its default 512-token input cap. Run more containers instead.
+- The SLM gets faster with more threads, though not in proportion. Set `SYSTEM_ONE_SLM_THREADS` to the container's CPU count.
+- Leave `SYSTEM_ONE_MAX_CONCURRENT` at 1. Neither backend runs inferences in parallel, so raising it doesn't add throughput.
+
+Give each container its CPUs with `--cpuset-cpus` instead of `--cpus`. OpenVINO starts one thread per core it can see, so under `--cpus` on a larger host the kernel throttles Von and requests take several times longer.
+
+For more requests per second, run several containers on separate cores (`--cpuset-cpus=0-3`, `--cpuset-cpus=4-7`, and so on) behind a load balancer that checks `GET /ready`. Each container loads its own copy of the model, so memory decides how many fit.
+
+For example, an SLM container on 16 cores:
+
+```sh
+docker run --rm -p 8000:8000 --cpuset-cpus=0-15 --memory=8g \
+  -e SYSTEM_ONE_SLM_THREADS=16 \
+  ghcr.io/agmangas/system-one-classification:latest-slm
+```
