@@ -26,6 +26,52 @@ docker run --rm -p 8000:8000 --cpuset-cpus=0-3 --memory=8g \
   ghcr.io/agmangas/system-one-classification:latest
 ```
 
+Once `GET /ready` responds with a 200, you can test the service using this example:
+
+```sh
+curl --fail-with-body -sS http://127.0.0.1:8000/v1/systemone \
+  -H 'Content-Type: application/json' \
+  --data-binary @- <<'JSON'
+{
+  "model": "system-one-cpu",
+  "state": "The track builds slowly over a steady four-on-the-floor groove, adding synth layers and subtle melodic changes without a big euphoric breakdown.",
+  "questions": {
+    "style": {
+      "type": "choice",
+      "instructions": "Which trance style best matches this track description?",
+      "criteria": {
+        "uplifting_trance": "Energetic trance with soaring melodies, dramatic breakdowns and euphoric peaks.",
+        "progressive_trance": "Trance with a steady groove, gradually evolving layers and subtle melodic development."
+      }
+    }
+  }
+}
+JSON
+```
+
+A response might look like this:
+
+```json
+{
+  "model": "system-one-cpu",
+  "answers": {
+    "style": {
+      "type": "choice",
+      "choice": "progressive_trance",
+      "probabilities": {
+        "uplifting_trance": 0.0693,
+        "progressive_trance": 0.9307
+      },
+      "confidence": 0.861
+    }
+  },
+  "usage": {
+    "input_tokens": 85,
+    "output_tokens": 1
+  }
+}
+```
+
 The image supports `linux/amd64` and `linux/arm64`. `latest` is the newest release; to keep the same models across releases, replace it with a [version](#versions) such as `0.1`.
 
 - `GET /ready`: ready after the model loads.
