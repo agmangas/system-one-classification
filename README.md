@@ -1,8 +1,23 @@
-# System One CPU classification
+# Classification and Scoring Service
 
-System One is a CPU-only HTTP service for classification, yes/no questions and scoring. Send data with instructions and criteria, and get structured answers with probabilities or scores. Choose [Von](https://github.com/wfzyx/von), Qwen3.5-4B or Bonsai-4B behind the same API; the Docker images bundle the model weights for offline use.
+The *Classification and Scoring Service* is a CPU-only HTTP service for classification, yes/no questions, and scoring. Submit data with instructions and criteria to receive structured answers that include probabilities or scores. You can choose from three different models:
+
+* [Von](https://github.com/wfzyx/von)
+* Qwen3.5-4B
+* Bonsai-4B
+
+All models are accessed through the same API. The Docker images include the model weights for offline use.
 
 The [examples](examples/README.md) include complete requests and labelled cases for testing predictions and comparing models.
+
+> [!NOTE]
+> **Why this project?** I often needed focused language model capabilities for our systems, but using an external provider wasn't an option due to cost and data sovereignty concerns, and running a GPU-based model locally was too expensive. This service aims to provide an off-the-shelf alternative that works with typical constraints.
+
+## TypeSafe protocol compatibility
+
+[TypeSafe calls its approach “System One”](https://docs.typesafe.ai/concepts/system-one): models answer focused questions with structured decisions and probabilities. The name draws on the idea of fast, intuitive thinking popularized by Daniel Kahneman. The API supports selecting an option (`choice`), estimating the probability of “yes” (`noul`), and scoring against defined levels (`score`).
+
+We implement [TypeSafe’s System One HTTP protocol](https://docs.typesafe.ai/api) for interoperability with clients that use this request and response format. Send `model`, `state`, and `questions` to `POST /v1/systemone`; responses contain `answers` and `usage`. To connect, use this service’s base URL and the model ID `system-one-cpu`.
 
 ## Run the service
 
@@ -18,8 +33,6 @@ The image supports `linux/amd64` and `linux/arm64`. For reproducible evaluation,
 - `GET /v1/models`: model and backend version metadata.
 - `/docs`: OpenAPI documentation.
 - Set `SYSTEM_ONE_API_KEY` to require bearer authentication.
-
-Send `model`, `state` and `questions` to `POST /v1/systemone`. The model ID is `system-one-cpu`; responses contain `answers` and `usage`.
 
 ## Choose a model
 

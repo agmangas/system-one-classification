@@ -1,7 +1,7 @@
 [project]
 name = "system-one-classification"
 version = "0.1.0"
-description = "CPU System One decision service with bundled Von or small language model weights"
+description = "CPU-only classification and scoring service with bundled Von or small language model weights"
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "fastapi>=0.116,<1",

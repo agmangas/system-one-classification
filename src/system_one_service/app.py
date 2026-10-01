@@ -1,4 +1,4 @@
-"""System One wire API backed by a pinned local model: Von or a small language model."""
+"""Classification and scoring with local models using TypeSafe's System One HTTP protocol."""
 
 import asyncio
 import logging
@@ -148,8 +148,11 @@ def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAP
             await asyncio.to_thread(close)
 
     api = FastAPI(
-        title="System One CPU",
-        description="CPU decision API: choice, yes/no and score without text generation.",
+        title="Classification and Scoring Service",
+        description=(
+            "CPU-only API for classification, yes/no probabilities and scoring. "
+            "Implements TypeSafe's System One HTTP protocol for interoperability."
+        ),
         version=__version__,
         lifespan=lifespan,
     )
@@ -169,7 +172,7 @@ def create_app(adapter: Any | None = None, *, eager_load: bool = True) -> FastAP
     def models() -> dict[str, Any]:
         model_entry = {
             "name": MODEL_ALIAS,
-            "description": "CPU System One decision model",
+            "description": "CPU classification and scoring model",
         }
         return {
             "models": [model_entry],
