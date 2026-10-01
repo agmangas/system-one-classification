@@ -17,7 +17,8 @@ until curl --fail --silent "$base_url/ready" >/dev/null; do
   sleep 2
 done
 
-docker exec "$container" /app/.venv/bin/python scripts/sdk_smoke.py
+# Run the SDK check from the host: the SLM image does not install Von.
+uv run --locked python scripts/sdk_smoke.py --base-url "$base_url"
 report_path="${2:-${REPORT_PATH:-reports/examples.json}}"
 mkdir -p "$(dirname "$report_path")"
 python3 scripts/runtime_metadata.py "$container" > "${report_path%.json}-runtime.json"
