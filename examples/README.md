@@ -56,15 +56,15 @@ python3 scripts/render_examples_report.py reports/von.json reports/qwen3.5-4b.js
 
 ## Reproduce a run
 
-Keep the repository revision, `uv.lock` and model manifests under `model/` fixed. Build an image, record its ID, then run the smoke check:
+Keep the repository revision, `uv.lock` and model manifests under `model/` fixed. Build an image, record its ID, then run the examples against it:
 
 ```sh
 task image-build  # Add BACKEND=slm for Qwen/Bonsai
 docker image inspect system-one-classification:local --format '{{.Id}}'
-sh scripts/image_smoke.sh sha256:YOUR_IMAGE_ID
+sh scripts/image_smoke.sh sha256:YOUR_IMAGE_ID reports/examples.json
 ```
 
-Replace `sha256:YOUR_IMAGE_ID` with the returned ID. The smoke check runs examples, SDK checks and a latency benchmark in a temporary container with four CPUs and eight GiB of memory. Reports under `reports/` record the image ID, architecture and runtime settings.
+Replace `sha256:YOUR_IMAGE_ID` with the returned ID. The script starts a temporary container with four CPUs and eight GiB of memory, then runs the SDK checks, every example and a latency benchmark. Reports under `reports/` record the image ID, architecture and runtime settings. Without the report path, the script runs only the SDK checks, as CI does.
 
 For remote servers, pass `--runtime-metadata FILE` to the runner; otherwise `server_runtime` is null. Client architecture and `expected_profile` do not verify server settings. Compare weights revisions and fixture hashes across runs.
 

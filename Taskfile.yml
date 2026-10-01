@@ -86,7 +86,7 @@ tasks:
       - docker build --target {{.BACKEND | default "von"}} --tag ${IMAGE:-system-one-classification:local} .
 
   image-smoke:
-    desc: Test the built image with four CPUs and eight GiB of memory
+    desc: Check that the built image answers one request per example and refuses oversized input
     cmds:
       - sh scripts/image_smoke.sh ${IMAGE:-system-one-classification:local}
 
