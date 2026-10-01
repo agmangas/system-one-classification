@@ -7,7 +7,7 @@ The [examples](examples/README.md) include complete requests and labelled cases 
 ## Run the service
 
 ```sh
-docker run --rm -p 8000:8000 --cpus=4 --memory=8g \
+docker run --rm -p 8000:8000 --cpuset-cpus=0-3 --memory=8g \
   ghcr.io/agmangas/system-one-classification:latest
 ```
 

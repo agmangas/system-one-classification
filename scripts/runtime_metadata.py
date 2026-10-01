@@ -38,6 +38,7 @@ def main() -> None:
                 "architecture": image["Architecture"],
                 "os": image["Os"],
                 "nano_cpus": container["HostConfig"]["NanoCpus"],
+                "cpuset_cpus": container["HostConfig"]["CpusetCpus"],
                 "memory_bytes": container["HostConfig"]["Memory"],
                 "environment": {key: env.get(key) for key in allowed},
             },

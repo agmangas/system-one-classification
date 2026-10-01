@@ -2,7 +2,7 @@
 set -eu
 
 image="${1:-system-one-classification:local}"
-container="$(docker run --detach --rm --cpus=4 --memory=8g -p 127.0.0.1::8000 "$image")"
+container="$(docker run --detach --rm --cpuset-cpus=0-3 --memory=8g -p 127.0.0.1::8000 "$image")"
 trap 'docker logs "$container"; docker stop "$container" >/dev/null' EXIT
 
 address="$(docker port "$container" 8000/tcp)"

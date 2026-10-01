@@ -93,7 +93,7 @@ tasks:
   image-up:
     desc: Start the built image on localhost port 18080 for manual API checks
     cmds:
-      - docker run --detach --rm --name system-one-dev --cpus=4 --memory=8g -p 127.0.0.1:18080:8000 ${IMAGE:-system-one-classification:local}
+      - docker run --detach --rm --name system-one-dev --cpuset-cpus=0-3 --memory=8g -p 127.0.0.1:18080:8000 ${IMAGE:-system-one-classification:local}
 
   image-down:
     desc: Stop the local API container
