@@ -254,6 +254,10 @@ pre {
   border-radius: 6px;
   margin: 12px 0;
 }
+.answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
 .answer {
   padding: 20px 24px;
   border-top: 1px solid var(--line);

@@ -172,7 +172,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
-            write_report(report, args.output.with_suffix(".html"))
+            write_report([report], args.output.with_suffix(".html"))
         print_summary(report)
         if args.output:
             print(f"\nFull report: {args.output}")
