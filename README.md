@@ -11,7 +11,7 @@ All models are accessed through the same API. The Docker images include the mode
 The [examples](examples/README.md) include complete requests and labelled cases for testing predictions and comparing models.
 
 > [!NOTE]
-> **Why this project?** I often needed focused language model capabilities for our systems, but using an external provider wasn't an option due to cost and data sovereignty concerns, and running a GPU-based model locally was too expensive. This service aims to provide an off-the-shelf alternative that works with typical constraints.
+> **Why this project?** I often want to add small-scale features powered by language models to existing workflows in our services, especially for processing and interpreting user-provided data. For example, a common need is vocabulary normalization (mapping arbitrary concepts to an ontology). Cloud-based providers are not viable due to cost or data sovereignty, and running a GPU-based model locally is too expensive and overkill. This service provides an off-the-shelf solution that works within typical computational constraints: CPU-only environments, limited memory and few cores.
 
 ## TypeSafe protocol compatibility
 
