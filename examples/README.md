@@ -56,15 +56,46 @@ python3 scripts/render_examples_report.py reports/von.json reports/qwen3.5-4b.js
 
 ## Reproduce a run
 
+Regenerate every example report for Von, Qwen and Bonsai in one command:
+
+```sh
+task examples-all
+```
+
+The task builds the Von and SLM Docker images and runs Von, Qwen and Bonsai one at a time.
+For each model, it checks SDK compatibility, runs all examples, records runtime settings
+and measures latency. It removes each container after the run, including failed runs.
+
+For each model name (`von`, `qwen3.5-4b`, `bonsai-4b`), it writes:
+
+- `reports/<model>.json` and `reports/<model>.html`
+- `reports/<model>-runtime.json`
+- `reports/<model>-benchmark.json`
+
+After all three runs succeed, it writes `reports/comparison.html`. Errors stop the task.
+Incorrect predictions appear in the reports.
+
+Install Docker, Task, uv and Python 3.12 on the host. The task uses uv to install the SDK
+dependencies; Docker handles model weights and inference. Reruns reuse cached Docker layers
+and overwrite reports.
+
+Workflow settings live in the Taskfile. For example:
+
+```sh
+task examples-all REPORT_DIR=reports/new-run DOCKER_CPUSET=4-7 DOCKER_MEMORY=12g
+```
+
+The default CPU set is four cores, matching the SLM image's four inference threads.
+
 Keep the repository revision, `uv.lock` and model manifests under `model/` fixed. Build an image, record its ID, then run the examples against it:
 
 ```sh
 task image-build  # Add BACKEND=slm for Qwen/Bonsai
 docker image inspect system-one-classification:local --format '{{.Id}}'
-sh scripts/image_smoke.sh sha256:YOUR_IMAGE_ID reports/examples.json
+task image-smoke IMAGE=sha256:YOUR_IMAGE_ID REPORT=reports/examples.json
 ```
 
-Replace `sha256:YOUR_IMAGE_ID` with the returned ID. The script starts a temporary container with four CPUs and eight GiB of memory, then runs the SDK checks, every example and a latency benchmark. Reports under `reports/` record the image ID, architecture and runtime settings. Without the report path, the script runs only the SDK checks, as CI does.
+Replace `sha256:YOUR_IMAGE_ID` with the returned ID. The task starts a temporary container with four CPUs and eight GiB of memory, then runs the SDK checks, every example and a latency benchmark. Reports under `reports/` record the image ID, architecture and runtime settings. Without `REPORT`, the task runs only the SDK checks, as CI does. Add `SLM_MODEL=bonsai-4b` to select Bonsai from an SLM image.
 
 For remote servers, pass `--runtime-metadata FILE` to the runner; otherwise `server_runtime` is null. Client architecture and `expected_profile` do not verify server settings. Compare weights revisions and fixture hashes across runs.
 

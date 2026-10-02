@@ -82,7 +82,6 @@ EXPECTED_PROFILES = {
         "VON_ON_OVERFLOW": "refuse",
     },
     "slm": {
-        "SYSTEM_ONE_SLM_MODEL": "qwen3.5-4b",
         "SYSTEM_ONE_SLM_CTX_SIZE": "1024",
         "SYSTEM_ONE_SLM_THREADS": "4",
     },

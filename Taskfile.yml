@@ -1,5 +1,26 @@
 version: "3"
 
+vars:
+  VON_BACKEND: von
+  SLM_BACKEND: slm
+  SLM_MODELS: [qwen3.5-4b, bonsai-4b]
+  DEFAULT_IMAGE: system-one-classification:local
+  REPORT_IMAGE_PREFIX: system-one-classification:reports
+  VON_REPORT_IMAGE: '{{.REPORT_IMAGE_PREFIX}}-{{.VON_BACKEND}}'
+  SLM_REPORT_IMAGE: '{{.REPORT_IMAGE_PREFIX}}-{{.SLM_BACKEND}}'
+  REPORT_DIR: reports
+  COMPARISON_REPORT: '{{.REPORT_DIR}}/comparison.html'
+  DOCKER_CPUSET: "0-3"
+  DOCKER_MEMORY: 8g
+  READY_ATTEMPTS: "180"
+  READY_INTERVAL: "2"
+
+env:
+  REPORT_CPUSET: '{{.DOCKER_CPUSET}}'
+  REPORT_MEMORY: '{{.DOCKER_MEMORY}}'
+  REPORT_READY_ATTEMPTS: '{{.READY_ATTEMPTS}}'
+  REPORT_READY_INTERVAL: '{{.READY_INTERVAL}}'
+
 tasks:
   setup:
     desc: Install pinned local dependencies
@@ -92,6 +113,33 @@ tasks:
     cmds:
       - python3 scripts/render_examples_report.py {{.REPORT | default "reports/examples.json" | shellQuote}} {{.CLI_ARGS}}
 
+  examples-all:
+    desc: Build Docker images and regenerate all model reports, benchmarks and the comparison
+    cmds:
+      - task: image-build
+        vars:
+          BACKEND: '{{.VON_BACKEND}}'
+          IMAGE: '{{.VON_REPORT_IMAGE}}'
+      - task: image-build
+        vars:
+          BACKEND: '{{.SLM_BACKEND}}'
+          IMAGE: '{{.SLM_REPORT_IMAGE}}'
+      - task: image-smoke
+        vars:
+          IMAGE: '{{.VON_REPORT_IMAGE}}'
+          REPORT: '{{.REPORT_DIR}}/{{.VON_BACKEND}}.json'
+      - for: {var: SLM_MODELS}
+        task: image-smoke
+        vars:
+          IMAGE: '{{.SLM_REPORT_IMAGE}}'
+          REPORT: '{{.REPORT_DIR}}/{{.ITEM}}.json'
+          SLM_MODEL: '{{.ITEM}}'
+      - >-
+        python3 scripts/render_examples_report.py
+        {{printf "%s/%s.json" .REPORT_DIR .VON_BACKEND | shellQuote}}
+        {{range .SLM_MODELS}}{{printf "%s/%s.json" $.REPORT_DIR . | shellQuote}} {{end}}
+        --output {{.COMPARISON_REPORT | shellQuote}}
+
   benchmark:
     desc: Measure warm HTTP latency for a selected example
     cmds:
@@ -105,17 +153,17 @@ tasks:
   image-build:
     desc: Build the CPU image for the local architecture; set BACKEND=slm for the SLM image
     cmds:
-      - docker build --target {{.BACKEND | default "von"}} --tag ${IMAGE:-system-one-classification:local} .
+      - docker build --target {{.BACKEND | default .VON_BACKEND | shellQuote}} --tag {{.IMAGE | default .DEFAULT_IMAGE | shellQuote}} .
 
   image-smoke:
     desc: Check that the built image answers one request per example and refuses oversized input
     cmds:
-      - sh scripts/image_smoke.sh ${IMAGE:-system-one-classification:local}
+      - sh scripts/image_smoke.sh {{.IMAGE | default .DEFAULT_IMAGE | shellQuote}} {{.REPORT | default "" | shellQuote}} {{.SLM_MODEL | default "" | shellQuote}}
 
   image-up:
     desc: Start the built image on localhost port 18080 for manual API checks
     cmds:
-      - docker run --detach --rm --name system-one-dev --cpuset-cpus=0-3 --memory=8g -p 127.0.0.1:18080:8000 ${IMAGE:-system-one-classification:local}
+      - docker run --detach --rm --name system-one-dev --cpuset-cpus={{.DOCKER_CPUSET | shellQuote}} --memory={{.DOCKER_MEMORY | shellQuote}} -p 127.0.0.1:18080:8000 {{.IMAGE | default .DEFAULT_IMAGE | shellQuote}}
 
   image-down:
     desc: Stop the local API container
